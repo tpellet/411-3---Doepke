@@ -146,8 +146,8 @@
     \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
     % Document title
-    \title{Problem Set 1 - 411-3}
-    \author{José Diego Salas and Thomas Pellet}
+    \title{Problem set 1 - 411-3}
+    \author{Thomas Pellet and José Diego Salas}
     
     
     
@@ -376,7 +376,7 @@
 Problem}\label{solving-a-dynamic-programming-problem}}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{11}{\boxspacing}
+\prompt{In}{incolor}{1}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
 \PY{c+c1}{\PYZsh{} import scipy }
@@ -395,7 +395,7 @@ Problem}\label{solving-a-dynamic-programming-problem}}
 \subsection{Value Function Iteration}\label{value-function-iteration}}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{12}{\boxspacing}
+\prompt{In}{incolor}{2}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{alpha}  \PY{o}{=} \PY{l+m+mf}{0.33}
 \PY{n}{beta}   \PY{o}{=} \PY{l+m+mf}{0.98}
@@ -416,7 +416,7 @@ Problem}\label{solving-a-dynamic-programming-problem}}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{13}{\boxspacing}
+\prompt{In}{incolor}{3}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{kstar} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{beta} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1} \PY{o}{+} \PY{n}{delta}\PY{p}{)}\PY{o}{/}\PY{n}{A}\PY{o}{/}\PY{n}{alpha}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{alpha}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
 \PY{n}{kstar}
@@ -424,210 +424,26 @@ Problem}\label{solving-a-dynamic-programming-problem}}
 \end{tcolorbox}
 
             \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
-\prompt{Out}{outcolor}{13}{\boxspacing}
+\prompt{Out}{outcolor}{3}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 9.091084887868014
 \end{Verbatim}
 \end{tcolorbox}
         
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{14}{\boxspacing}
+\prompt{In}{incolor}{4}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{assert} \PY{n}{np}\PY{o}{.}\PY{n}{isclose}\PY{p}{(}\PY{n}{beta}\PY{o}{*}\PY{n}{fk}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{15}{\boxspacing}
+\prompt{In}{incolor}{5}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} grid}
 \PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{1500}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
-
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{16}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{c+c1}{\PYZsh{} Compute value function today, from guess Value function tomorrow}
-\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
-\PY{k}{def} \PY{n+nf}{Vendog}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{Vplus}\PY{p}{)}\PY{p}{:}
-        \PY{n}{value} \PY{o}{=} \PY{n}{util}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{kplus}\PY{p}{,} \PY{l+m+mf}{1E\PYZhy{}10}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{n}{beta} \PY{o}{*} \PY{n}{Vplus} \PY{c+c1}{\PYZsh{} avoid negative consumption}
-        \PY{k}{return}  \PY{n}{value}
-
-\PY{c+c1}{\PYZsh{} Backward iteration}
-\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
-\PY{k}{def} \PY{n+nf}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
-    
-    \PY{n}{maxindex} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
-    \PY{c+c1}{\PYZsh{} loop over the grid k}
-    \PY{k}{for} \PY{n}{ik}\PY{p}{,} \PY{n}{k\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
-
-        \PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
-        
-        \PY{k}{for} \PY{n}{ik2}\PY{p}{,} \PY{n}{k\PYZus{}cur2} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
-            
-            \PY{c+c1}{\PYZsh{}compute value function for all availabe saving choices}
-            \PY{n}{value}\PY{p}{[}\PY{n}{ik2}\PY{p}{]} \PY{o}{=} \PY{n}{Vendog}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{n}{ik2}\PY{p}{]}\PY{p}{,} \PY{n}{k\PYZus{}cur}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{n}{ik2}\PY{p}{]}\PY{p}{)}
-        
-        \PY{c+c1}{\PYZsh{} find optimal saving decision}
-        \PY{n}{index}         \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{value}\PY{p}{)}
-        \PY{n}{maxindex}\PY{p}{[}\PY{n}{ik}\PY{p}{]}  \PY{o}{=} \PY{n}{index}
-        \PY{c+c1}{\PYZsh{} compute new value function}
-        \PY{n}{V}\PY{p}{[}\PY{n}{ik}\PY{p}{]}     \PY{o}{=} \PY{n}{value}\PY{p}{[}\PY{n}{index}\PY{p}{]}
-
-    \PY{k}{return} \PY{n}{maxindex}\PY{p}{,} \PY{n}{V}
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{17}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{c+c1}{\PYZsh{} Iteration algorithm}
-\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
-\PY{k}{def} \PY{n+nf}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
-    
-    \PY{n}{maxindex} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
-    \PY{n}{V}    \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
-    \PY{n}{Vold}    \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
-    
-    \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2000}\PY{p}{)}\PY{p}{:}
-        
-        \PY{n}{maxindex}\PY{p}{,} \PY{n}{V} \PY{o}{=} \PY{n}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{k}\PY{p}{)}   
-        
-        \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V} \PY{o}{\PYZhy{}} \PY{n}{Vold}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}5}\PY{p}{:}
-
-            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{convergence in}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{it}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ iterations!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-            \PY{k}{return} \PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{int32}\PY{p}{)}\PY{p}{,} \PY{n}{V}
-        
-
-        \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)} \PY{c+c1}{\PYZsh{} avoid updating both Vold and V by making a copy}
-        
-        
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{78}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{o}{\PYZpc{}}\PY{k}{time} maxindex, V = ss\PYZus{}policy(k)
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-convergence in 281  iterations!
-CPU times: user 2.33 s, sys: 0 ns, total: 2.33 s
-Wall time: 2.33 s
-    \end{Verbatim}
-
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{37}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{V}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Utils}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{38}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}\PY{p}{]}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Savings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Policy function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{39}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{n}{c} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}\PY{p}{]}
-\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{c}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Consumption}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Consumption}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{40}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{c+c1}{\PYZsh{}\PYZsh{} Steady state level of capital}
-\PY{n}{kstar} \PY{o}{=} \PY{n}{k}\PY{p}{[}\PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{p}{]} \PY{o}{==} \PY{n}{k}\PY{p}{]}
-\PY{n}{kstar}
-\end{Verbatim}
-\end{tcolorbox}
-
-            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
-\prompt{Out}{outcolor}{40}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-array([9.08802803, 9.10303303])
-\end{Verbatim}
-\end{tcolorbox}
-        
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{41}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
-\PY{k}{def} \PY{n+nf}{policy\PYZus{}interp}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}\PY{p}{:}
-    \PY{n}{policy} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{interp}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{p}{]}\PY{p}{)}
-    \PY{k}{return} \PY{n}{policy}
-
-\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
-\PY{k}{def} \PY{n+nf}{timeseries}\PY{p}{(}\PY{n}{start}\PY{p}{,} \PY{n}{periods}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}\PY{p}{:}
-    \PY{n}{series} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{periods}\PY{p}{)}
-    \PY{n}{series}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{start}
-    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{periods}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
-        \PY{n}{series}\PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}  \PY{o}{=} \PY{n}{policy\PYZus{}interp}\PY{p}{(}\PY{n}{series}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}
-    \PY{k}{return} \PY{n}{series}
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{44}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{n}{start} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
-\PY{n}{T} \PY{o}{=} \PY{l+m+mi}{50}
-
-\PY{k}{for} \PY{n}{element} \PY{o+ow}{in} \PY{n}{start}\PY{p}{:}
-    \PY{n}{series} \PY{o}{=} \PY{n}{timeseries}\PY{p}{(}\PY{n}{element}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}
-    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{,} 
-    \PY{n}{series}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}k\PYZus{}0 = }\PY{l+s+si}{\PYZob{}j\PYZcb{}}\PY{l+s+s1}{ \PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{j}\PY{o}{=}\PY{n}{element}\PY{p}{)}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Period t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Capital}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Dynamic behavior of capital}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
-\end{Verbatim}
-\end{tcolorbox}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    This model predicts rapid convergence of capital towards the steady
-state over the medium run. It would predict rapid convergence of wealth
-across countries.
-
-    \hypertarget{howard-policy-improvement}{%
-\subsubsection{Howard policy
-improvement}\label{howard-policy-improvement}}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{6}{\boxspacing}
@@ -660,13 +476,169 @@ improvement}\label{howard-policy-improvement}}
         \PY{n}{V}\PY{p}{[}\PY{n}{ik}\PY{p}{]}     \PY{o}{=} \PY{n}{value}\PY{p}{[}\PY{n}{index}\PY{p}{]}
 
     \PY{k}{return} \PY{n}{maxindex}\PY{p}{,} \PY{n}{V}
+\end{Verbatim}
+\end{tcolorbox}
 
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Iteration algorithm}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{maxindex} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+    \PY{n}{V}    \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+    \PY{n}{Vold}    \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2000}\PY{p}{)}\PY{p}{:}
+        
+        \PY{n}{maxindex}\PY{p}{,} \PY{n}{V} \PY{o}{=} \PY{n}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{k}\PY{p}{)}   
+        
+        \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V} \PY{o}{\PYZhy{}} \PY{n}{Vold}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}5}\PY{p}{:}
+
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{convergence in}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{it}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ iterations!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{int32}\PY{p}{)}\PY{p}{,} \PY{n}{V}
+        
+
+        \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)} \PY{c+c1}{\PYZsh{} avoid updating both Vold and V by making a copy}
+        
+        
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{time} maxindex, V = ss\PYZus{}policy(k)
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 251  iterations!
+CPU times: user 5.68 s, sys: 16 ms, total: 5.7 s
+Wall time: 5.69 s
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{V}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Utils}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Savings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Policy function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{c} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}\PY{p}{]}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{c}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Consumption}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Consumption}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{} Steady state level of capital}
+\PY{n}{kstar} \PY{o}{=} \PY{n}{k}\PY{p}{[}\PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{p}{]} \PY{o}{==} \PY{n}{k}\PY{p}{]}
+\PY{n}{kstar}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([9.09])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{policy\PYZus{}interp}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}\PY{p}{:}
+    \PY{n}{policy} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{interp}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{policy}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{timeseries}\PY{p}{(}\PY{n}{start}\PY{p}{,} \PY{n}{periods}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}\PY{p}{:}
+    \PY{n}{series} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{periods}\PY{p}{)}
+    \PY{n}{series}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{start}
+    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{periods}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{series}\PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}  \PY{o}{=} \PY{n}{policy\PYZus{}interp}\PY{p}{(}\PY{n}{series}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}
+    \PY{k}{return} \PY{n}{series}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{start} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+\PY{n}{T} \PY{o}{=} \PY{l+m+mi}{50}
+
+\PY{k}{for} \PY{n}{element} \PY{o+ow}{in} \PY{n}{start}\PY{p}{:}
+    \PY{n}{series} \PY{o}{=} \PY{n}{timeseries}\PY{p}{(}\PY{n}{element}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{maxindex}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{,} 
+    \PY{n}{series}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}k\PYZus{}0 = }\PY{l+s+si}{\PYZob{}j\PYZcb{}}\PY{l+s+s1}{ \PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{j}\PY{o}{=}\PY{n}{element}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Period t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Capital}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Dynamic behavior of capital}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    This model predicts rapid convergence of capital towards the steady
+state over the medium run. It would predict rapid convergence of wealth
+across countries.
+
+    \hypertarget{howard-policy-improvement}{%
+\subsubsection{Howard policy
+improvement}\label{howard-policy-improvement}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} compute utility conditional on policy function}
 \PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
 \PY{k}{def} \PY{n+nf}{U\PYZus{}pol}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
     \PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
     
     \PY{k}{for} \PY{n}{ik}\PY{p}{,} \PY{n}{k\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
-        \PY{n}{U}\PY{p}{[}\PY{n}{ik}\PY{p}{]} \PY{o}{=} \PY{n}{util}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{k\PYZus{}cur}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{p}{[}\PY{n}{ik}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{l+m+mf}{1E\PYZhy{}6}\PY{p}{)}\PY{p}{)}
+        \PY{n}{U}\PY{p}{[}\PY{n}{ik}\PY{p}{]} \PY{o}{=} \PY{n}{util}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{k\PYZus{}cur}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{k}\PY{p}{[}\PY{n}{maxindex}\PY{p}{[}\PY{n}{ik}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{l+m+mf}{1E\PYZhy{}5}\PY{p}{)}\PY{p}{)}
     \PY{k}{return} \PY{n}{U}
 
 
@@ -685,7 +657,7 @@ improvement}\label{howard-policy-improvement}}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{7}{\boxspacing}
+\prompt{In}{incolor}{9}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} Iteration algorithm}
 \PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
@@ -696,7 +668,7 @@ improvement}\label{howard-policy-improvement}}
     \PY{n}{Vold}    \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
     
     \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{20000}\PY{p}{)}\PY{p}{:}
-        
+\PY{c+c1}{\PYZsh{}         print(it)}
         \PY{n}{maxindex}\PY{p}{,} \PY{n}{V} \PY{o}{=} \PY{n}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{k}\PY{p}{)}   
         \PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V} \PY{o}{\PYZhy{}} \PY{n}{Vold}\PY{p}{)}\PY{p}{)}
         \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V} \PY{o}{\PYZhy{}} \PY{n}{Vold}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}5}\PY{p}{:}
@@ -706,29 +678,25 @@ improvement}\label{howard-policy-improvement}}
         
         \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)} \PY{c+c1}{\PYZsh{} avoid updating both Vold and V by making a copy}
         
-        
-        
-        \PY{k}{if} \PY{n}{howard} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
-            \PY{n}{V\PYZus{}h} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)}
-            \PY{n}{V\PYZus{}hold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)}
+        \PY{k}{if} \PY{n}{it} \PY{o}{\PYZgt{}} \PY{l+m+mi}{10}\PY{p}{:}
             \PY{n}{ind} \PY{o}{=} \PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{int32}\PY{p}{)}
             \PY{n}{UC} \PY{o}{=} \PY{n}{U\PYZus{}pol}\PY{p}{(}\PY{n}{ind}\PY{p}{,} \PY{n}{k}\PY{p}{)}        \PY{c+c1}{\PYZsh{} Compute utility conditional on grid and policy function}
 
-            \PY{k}{for} \PY{n}{it2} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2000}\PY{p}{)}\PY{p}{:}
-
-                \PY{n}{V\PYZus{}h} \PY{o}{=} \PY{n}{Howard}\PY{p}{(}\PY{n}{ind}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{V\PYZus{}h}\PY{p}{,} \PY{n}{UC}\PY{p}{)}   
-\PY{c+c1}{\PYZsh{}                 print(np.linalg.norm(V\PYZus{}h \PYZhy{} V\PYZus{}hold))}
-                \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V\PYZus{}h} \PY{o}{\PYZhy{}} \PY{n}{V\PYZus{}hold}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}10}\PY{p}{:}
+            \PY{k}{for} \PY{n}{it2} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+\PY{c+c1}{\PYZsh{}                 print(\PYZdq{}Number of iterations\PYZdq{}, it2)}
+                \PY{n}{V} \PY{o}{=} \PY{n}{Howard}\PY{p}{(}\PY{n}{ind}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{Vold}\PY{p}{,} \PY{n}{UC}\PY{p}{)}   
+\PY{c+c1}{\PYZsh{}                 print(np.linalg.norm(V \PYZhy{} V\PYZus{}old))}
+                \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V} \PY{o}{\PYZhy{}} \PY{n}{Vold}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}5}\PY{p}{:}
 \PY{c+c1}{\PYZsh{}                     print(\PYZdq{}convergence in\PYZdq{}, it2, \PYZdq{} iterations!\PYZdq{})}
-                    \PY{n}{V} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V\PYZus{}h}\PY{p}{)}
-                    \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V\PYZus{}h}\PY{p}{)}
+                    \PY{n}{V} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)}
+                    \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)}
                     \PY{k}{break}
                     
-                \PY{k}{elif} \PY{n}{it2} \PY{o}{==} \PY{l+m+mi}{2000}\PY{p}{:}
+                \PY{k}{elif} \PY{n}{it2} \PY{o}{==} \PY{l+m+mi}{1000}\PY{p}{:}
                 
                         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Howard Improvement did not converge!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
                     
-                \PY{n}{V\PYZus{}hold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V\PYZus{}h}\PY{p}{)}
+                \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -793,7 +761,7 @@ u'(c(k)) = \beta \mathbb{E}[f_k(k_+(k))u'(c(k_+(k)))]
 \]
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{27}{\boxspacing}
+\prompt{In}{incolor}{39}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
 \PY{k}{def} \PY{n+nf}{up}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{:}
@@ -802,11 +770,11 @@ u'(c(k)) = \beta \mathbb{E}[f_k(k_+(k))u'(c(k_+(k)))]
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{76}{\boxspacing}
+\prompt{In}{incolor}{40}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} @numba.jit}
 \PY{k}{def} \PY{n+nf}{Euler\PYZus{}err\PYZus{}cubic}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{tck}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
-    \PY{n}{err} \PY{o}{=} \PY{n}{up}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{kplus}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{beta} \PY{o}{*} \PY{n}{fk}\PY{p}{(}\PY{n}{kplus}\PY{p}{)} \PY{o}{*} \PY{n}{up}\PY{p}{(}\PY{n}{interpolate}\PY{o}{.}\PY{n}{splev}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{tck}\PY{p}{)}\PY{p}{)}
+    \PY{n}{err} \PY{o}{=} \PY{n}{up}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{kplus}\PY{p}{,} \PY{l+m+mf}{1E\PYZhy{}5}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{beta} \PY{o}{*} \PY{n}{fk}\PY{p}{(}\PY{n}{kplus}\PY{p}{)} \PY{o}{*} \PY{n}{up}\PY{p}{(}\PY{n}{interpolate}\PY{o}{.}\PY{n}{splev}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{tck}\PY{p}{)}\PY{p}{)}
     \PY{k}{return} \PY{n}{err}
 
 \PY{c+c1}{\PYZsh{} @numba.jit}
@@ -828,7 +796,7 @@ u'(c(k)) = \beta \mathbb{E}[f_k(k_+(k))u'(c(k_+(k)))]
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{77}{\boxspacing}
+\prompt{In}{incolor}{41}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{ss\PYZus{}policy\PYZus{}cubic}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
     \PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{)}
@@ -846,19 +814,19 @@ u'(c(k)) = \beta \mathbb{E}[f_k(k_+(k))u'(c(k_+(k)))]
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{78}{\boxspacing}
+\prompt{In}{incolor}{42}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{o}{\PYZpc{}}\PY{k}{time} tck = ss\PYZus{}policy\PYZus{}cubic(k)
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-CPU times: user 24.7 s, sys: 48.1 ms, total: 24.7 s
-Wall time: 24.5 s
+CPU times: user 48.7 s, sys: 171 ms, total: 48.9 s
+Wall time: 48.1 s
     \end{Verbatim}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{62}{\boxspacing}
+\prompt{In}{incolor}{43}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{c} \PY{o}{=} \PY{n}{interpolate}\PY{o}{.}\PY{n}{splev}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
 \PY{n}{savings} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{c}
@@ -882,19 +850,19 @@ No handles with labels found to put in legend.
     { \hspace*{\fill} \\}
     
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{124}{\boxspacing}
+\prompt{In}{incolor}{48}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{}Find a fixed point}
 \PY{n}{fun} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{interpolate}\PY{o}{.}\PY{n}{splev}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
-\PY{n}{kstar} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{fixed\PYZus{}point}\PY{p}{(}\PY{n}{fun}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+\PY{n}{kstar} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{fixed\PYZus{}point}\PY{p}{(}\PY{n}{fun}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
 \PY{n}{kstar}
 \end{Verbatim}
 \end{tcolorbox}
 
             \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
-\prompt{Out}{outcolor}{124}{\boxspacing}
+\prompt{Out}{outcolor}{48}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-array([9.09108489, 9.09108489])
+9.091084887881347
 \end{Verbatim}
 \end{tcolorbox}
         
@@ -903,7 +871,7 @@ array([9.09108489, 9.09108489])
 II}\label{policy-function-iteration---method-ii}}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{21}{\boxspacing}
+\prompt{In}{incolor}{49}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{BC}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{kpplus}\PY{p}{)}\PY{p}{:}
     \PY{c+c1}{\PYZsh{}Get consumption from budget constraint}
@@ -942,7 +910,7 @@ II}\label{policy-function-iteration---method-ii}}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{22}{\boxspacing}
+\prompt{In}{incolor}{50}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{ss\PYZus{}policy\PYZus{}II}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{kbar}\PY{p}{)}\PY{p}{:}
     
@@ -954,7 +922,7 @@ II}\label{policy-function-iteration---method-ii}}
         \PY{n}{knew} \PY{o}{=} \PY{n}{backward\PYZus{}iterate\PYZus{}II}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{kbar}\PY{p}{)} 
         
         \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{knew} \PY{o}{\PYZhy{}} \PY{n}{kplus}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}10}\PY{p}{:}
-            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{convergence in }\PY{l+s+si}{\PYZob{}}\PY{n}{it}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ iterations!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{convergence in }\PY{l+s+si}{\PYZob{}it\PYZcb{}}\PY{l+s+s1}{ iterations!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
             \PY{n}{tck\PYZus{}out} \PY{o}{=} \PY{n}{interpolate}\PY{o}{.}\PY{n}{splrep}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{knew}\PY{p}{)}
             \PY{k}{return} \PY{n}{tck\PYZus{}out}
         
@@ -964,7 +932,7 @@ II}\label{policy-function-iteration---method-ii}}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{6}{\boxspacing}
+\prompt{In}{incolor}{52}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{o}{\PYZpc{}}\PY{k}{time} tck = ss\PYZus{}policy\PYZus{}II(k, 5*kstar)
 \end{Verbatim}
@@ -972,12 +940,12 @@ II}\label{policy-function-iteration---method-ii}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 convergence in 111 iterations!
-CPU times: user 217 ms, sys: 3.89 ms, total: 221 ms
-Wall time: 220 ms
+CPU times: user 560 ms, sys: 2 µs, total: 560 ms
+Wall time: 558 ms
     \end{Verbatim}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{7}{\boxspacing}
+\prompt{In}{incolor}{53}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{savings} \PY{o}{=} \PY{n}{interpolate}\PY{o}{.}\PY{n}{splev}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
 \PY{n}{c} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{savings}
@@ -1001,19 +969,19 @@ No handles with labels found to put in legend.
     { \hspace*{\fill} \\}
     
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{50}{\boxspacing}
+\prompt{In}{incolor}{66}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{}Find a fixed point}
 \PY{n}{fun} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{interpolate}\PY{o}{.}\PY{n}{splev}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
-\PY{n}{kstar} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{fixed\PYZus{}point}\PY{p}{(}\PY{n}{fun}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+\PY{n}{kstar} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{fixed\PYZus{}point}\PY{p}{(}\PY{n}{fun}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
 \PY{n}{kstar}
 \end{Verbatim}
 \end{tcolorbox}
 
             \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
-\prompt{Out}{outcolor}{50}{\boxspacing}
+\prompt{Out}{outcolor}{66}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-array([9.09108489, 9.09108489])
+9.091084887841202
 \end{Verbatim}
 \end{tcolorbox}
         
@@ -1022,7 +990,7 @@ array([9.09108489, 9.09108489])
 Method}\label{endogenous-grid-points-method}}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{23}{\boxspacing}
+\prompt{In}{incolor}{55}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{up\PYZus{}inv}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{:}
     \PY{k}{return} \PY{l+m+mi}{1}\PY{o}{/}\PY{n}{c}
@@ -1032,7 +1000,7 @@ Method}\label{endogenous-grid-points-method}}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{24}{\boxspacing}
+\prompt{In}{incolor}{56}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{get\PYZus{}cendog}\PY{p}{(}\PY{n}{cplus}\PY{p}{,} \PY{n}{fk}\PY{p}{,} \PY{n}{up}\PY{p}{,} \PY{n}{up\PYZus{}inv}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
     \PY{k}{return} \PY{n}{up\PYZus{}inv}\PY{p}{(}\PY{n}{beta} \PY{o}{*} \PY{p}{(}\PY{n}{fk}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{*}\PY{n}{up}\PY{p}{(}\PY{n}{cplus}\PY{p}{)}\PY{p}{)}\PY{p}{)}
@@ -1047,32 +1015,34 @@ Method}\label{endogenous-grid-points-method}}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{25}{\boxspacing}
+\prompt{In}{incolor}{57}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k}{def} \PY{n+nf}{ss\PYZus{}policy\PYZus{}endog}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
     \PY{n}{c} \PY{o}{=} \PY{l+m+mf}{0.3}\PY{o}{*}\PY{n}{k}
     \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2000}\PY{p}{)}\PY{p}{:}
         \PY{n}{c} \PY{o}{=} \PY{n}{backward\PYZus{}iterate\PYZus{}endog}\PY{p}{(}\PY{n}{c}\PY{p}{,} \PY{n}{k}\PY{p}{)}
         \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{c} \PY{o}{\PYZhy{}} \PY{n}{cold}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}10}\PY{p}{:}
-            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{convergence in }\PY{l+s+si}{\PYZob{}}\PY{n}{it}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ iterations!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{convergence in }\PY{l+s+si}{\PYZob{}it\PYZcb{}}\PY{l+s+s1}{ iterations!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
             \PY{k}{return} \PY{n}{c}
         \PY{n}{cold} \PY{o}{=} \PY{n}{c}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{56}{\boxspacing}
+\prompt{In}{incolor}{59}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PY{o}{\PYZpc{}}\PY{k}{prun} c = ss\PYZus{}policy\PYZus{}endog(k)
+\PY{o}{\PYZpc{}}\PY{k}{time} c = ss\PYZus{}policy\PYZus{}endog(k)
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 convergence in 111 iterations!
+CPU times: user 63.1 ms, sys: 0 ns, total: 63.1 ms
+Wall time: 61.5 ms
     \end{Verbatim}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{27}{\boxspacing}
+\prompt{In}{incolor}{60}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{n}{savings} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{k}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{c}
 \PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
@@ -1094,32 +1064,46 @@ No handles with labels found to put in legend.
     \end{center}
     { \hspace*{\fill} \\}
     
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Find a fixed point}
+\PY{n}{tck} \PY{o}{=} \PY{n}{interpolate}\PY{o}{.}\PY{n}{splrep}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{c}\PY{p}{)}
+\PY{n}{fun} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{interpolate}\PY{o}{.}\PY{n}{splev}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
+\PY{n}{kstar} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{fixed\PYZus{}point}\PY{p}{(}\PY{n}{fun}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{kstar}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+9.091084888650906
+\end{Verbatim}
+\end{tcolorbox}
+        
     \hypertarget{comparing-methods}{%
 \subsubsection{Comparing methods}\label{comparing-methods}}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{26}{\boxspacing}
+\prompt{In}{incolor}{69}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PY{o}{\PYZpc{}}\PY{k}{time} maxindex, V = ss\PYZus{}policy(k)
-\PY{o}{\PYZpc{}}\PY{k}{time} tck         = ss\PYZus{}policy\PYZus{}cubic(k)
-\PY{o}{\PYZpc{}}\PY{k}{time} tck         = ss\PYZus{}policy\PYZus{}II(k, 5*kstar)
-\PY{o}{\PYZpc{}}\PY{k}{time} c           = ss\PYZus{}policy\PYZus{}endog(k)
+\PY{n}{solving\PYZus{}time1} \PY{o}{=} \PY{o}{\PYZpc{}}\PY{k}{timeit} \PYZhy{}n1 \PYZhy{}r 1 \PYZhy{}o ss\PYZus{}policy(k)
+\PY{n}{solving\PYZus{}time2} \PY{o}{=} \PY{o}{\PYZpc{}}\PY{k}{timeit} \PYZhy{}n1 \PYZhy{}r 1 \PYZhy{}o ss\PYZus{}policy\PYZus{}cubic(k)
+\PY{n}{solving\PYZus{}time3} \PY{o}{=} \PY{o}{\PYZpc{}}\PY{k}{timeit} \PYZhy{}n1 \PYZhy{}r 1 \PYZhy{}o ss\PYZus{}policy\PYZus{}II(k, kstar)
+\PY{n}{solving\PYZus{}time4} \PY{o}{=} \PY{o}{\PYZpc{}}\PY{k}{timeit} \PYZhy{}n1 \PYZhy{}r 1 \PYZhy{}o ss\PYZus{}policy\PYZus{}endog(k)
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{solving\PYZus{}time1}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-convergence in 281  iterations!
-CPU times: user 2.36 s, sys: 0 ns, total: 2.36 s
-Wall time: 2.36 s
-convergence in 141 iterations!
-CPU times: user 25.2 s, sys: 25.4 ms, total: 25.2 s
-Wall time: 25 s
+convergence in 251  iterations!
+5.87 s ± 0 ns per loop (mean ± std. dev. of 1 run, 1 loop each)
+54.9 s ± 0 ns per loop (mean ± std. dev. of 1 run, 1 loop each)
+5.76 s ± 0 ns per loop (mean ± std. dev. of 1 run, 1 loop each)
 convergence in 111 iterations!
-CPU times: user 382 ms, sys: 0 ns, total: 382 ms
-Wall time: 382 ms
-convergence in 111 iterations!
-CPU times: user 132 ms, sys: 0 ns, total: 132 ms
-Wall time: 132 ms
+43.5 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 1 loop each)
+5.87 s ± 0 ns per loop (mean ± std. dev. of 1 run, 1 loop each)
     \end{Verbatim}
 
     Using optimize.root for policy function iteration is very costly.
@@ -1358,33 +1342,42 @@ only smooth consumption throughout time.
 \subsection{e) No borrowing
 constraint}\label{e-no-borrowing-constraint}}
 
-Now we impose the restriction of \(a(s)_t=0\), for all \(s\) and \(t\).
-Under this scenario, we know that the Euler condition will hold with
-inequality:
+Now we impose the restriction of \(a_t(s) \geq0\), for all \(s\) and
+\(t\). Under this scenario, we know that the agents of type H will reach
+the constrain, as they would like to borrow:
 
 \[
-u'(c(s)_t)\geq \beta (1+r) u'(c(s)_{t+1})
+c_t(H) = y_t(H)
 \]
 
-Since individuals cannot save, the budget constraint implies that
-they'll have to consume their endowments every period, so that
-\(c(s)_t=y(s)_t\). This means that:
+On the other hand, the agents of type \$ L \$ are not constrained
+because they did not want to borrow assets under the looser constraint.
+The Euler equation still holds for them.
 
 \[
-\beta(1+r)\leq \frac{y(s)_{t+1}}{y(s)_{t}}
+u'(c_t(L)) = \beta (1+r) u'(c_{t+1}(L))
 \]
 
-Now, since the individuals of type \(s=L\) are the ones who wanted to
-save, we can expect that this condition will be ``tighter'' for them
-(also because they are the ones with a decreasing income trajectory). So
-replacing, we get:
+By market clearing we know that agents of type \(L\) wont save. The
+budget constraint implies that they'll have to consume their endowments
+every period, so that \(c_t(s)=y_t(s)\) for both types. This means that:
 
 \[
-\beta(1+r)\leq \frac{0.25+(0.25)^{t+2}}{0.25+(0.25)^{t+1}}=\frac{5}{8}.
+\beta (1+r) =  \frac{u'(c_t(L))}{u'(c_{t+1}(L))} = \frac{y_{t+1}(L)}{y_t(L)} = \frac{0.25+(0.25)^{t+2}}{0.25+(0.25)^{t+1}}=\frac{5}{8} < 1
 \]
 
-This last bound is obtained by replacing at \(t=0\) since that's when we
-get the ``tightest'' bound for the parameters.
+Agents of type \(L\) would like to save but by market clearing we know
+that supply and demand of assets is zero because of the no-borrowing
+constraint. What is happening is that price of capital is increasing to
+the point when agents of type \(L\) are indifferent betweent holding
+assets or not.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
 
 
     % Add a bibliography block to the postdoc
