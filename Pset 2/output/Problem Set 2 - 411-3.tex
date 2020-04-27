@@ -1,0 +1,1472 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Problem Set 2 - 411-3}
+    \author{José Diego Salas and Thomas Pellet}
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{104}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{} import scipy }
+\PY{c+c1}{\PYZsh{} from scipy.optimize import brentq    \PYZsh{}equation solver}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{optimize}
+\PY{c+c1}{\PYZsh{} from scipy.stats import norm}
+\PY{c+c1}{\PYZsh{} from scipy.optimize import minimize}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{} import numpy.polynomial.chebyshev as chebyshev}
+\PY{k+kn}{import} \PY{n+nn}{numba}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{interpolate}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{solving-the-aiyagari-model-with-python}{%
+\section{Solving the Aiyagari model with
+Python}\label{solving-the-aiyagari-model-with-python}}
+
+    \hypertarget{the-consumer-problem}{%
+\subsection{The consumer problem}\label{the-consumer-problem}}
+
+    \[
+\max_{\left\{c_t, a_{t+1}\right\}_{t=0}^\infty} \mathbb{E}_t \left[\sum_{t=0}^{\infty} \beta^t \frac{c_t^{1- \sigma}}{1-\sigma}\right]
+\] subject to:
+
+\[
+ c_t + a_{t+1}\leq (1+r) a_t + w l_t ,\ \forall t
+\]
+
+and the natural borrowing limit \[
+a_{t}\geq - b,\ \forall t
+\] Note that \[\min_{\mathbb{L}} l_{t} = 0 ,\ \forall t\]
+
+so that the natural debt limit is 0 for all consumers.
+
+The Bellman equation for this problem is:
+
+\[
+V(l,a) = \max_{c,a'} \left[ \frac{c^{1- \sigma}}{1-\sigma} + \beta \sum_{l' \in \mathbb{L}}  V(l',a') \Pi(l' | l) \right]
+\] subject to: \[
+ c + a' = (1+r) a + w l
+\] \[
+a'\geq - b
+\]
+
+    Solving the representative firm problem we derive wages and the interest
+rate, net of depreciation:
+
+\[
+w_t = f_l(K_t,L_t) = (1 - \alpha) \left(\frac{K_t}{L_t}\right)^\alpha
+\]
+
+\[
+r = f_k(K_t,L_t) - \delta = \alpha \left(\frac{L_t}{K_t}\right)^{1 - \alpha} - \delta
+\]
+
+    \hypertarget{stationary-recursive-equilibrium}{%
+\subsection{Stationary recursive
+equilibrium}\label{stationary-recursive-equilibrium}}
+
+    In the Aiyagari model, a stationary recursive equilibrium is defined by
+prices \(\{w, r\}\), aggregate quantities \(K, Y, L\) , a value function
+\(V(l,a)\), a policy function \(a'(l,a)\) and a law of motion for the
+distribution of households \(\lambda(l_t, a_t)\): 1. Agents solve their
+maximization problem as defined by the Bellman equation 2. Firms
+optimize their production, so that profits are zero in equilibrium 3.
+The law of motion is stationary 4. The resource constraint is satisfied:
+* \(C + K = (1- \delta) K + F(K,L)\)
+
+    \hypertarget{demand-for-assets}{%
+\subsection{Demand for assets}\label{demand-for-assets}}
+
+Given the relationship between the interest rate and capital in
+equilibrium, demand for asset as a function of the interest rate \(r\)
+is: \[
+K(r) = \left(\frac{\alpha}{r + \delta}\right)^{\frac{1}{1-\alpha}} L
+\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{105}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{β}  \PY{o}{=} \PY{l+m+mf}{0.97}
+\PY{n}{σ}  \PY{o}{=} \PY{l+m+mf}{0.6}
+\PY{n}{α}  \PY{o}{=} \PY{l+m+mf}{0.3}
+\PY{n}{δ}  \PY{o}{=} \PY{l+m+mf}{0.1}
+\PY{n}{Π}     \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{o}{.}\PY{l+m+mi}{8}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{lstar} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{/}\PY{l+m+mf}{0.7}
+\PY{n}{kstar} \PY{o}{=} \PY{p}{(} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{β} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{o}{+}\PY{n}{δ}\PY{p}{)} \PY{o}{/}\PY{p}{(}\PY{n}{α}\PY{o}{*}\PY{p}{(}\PY{n}{lstar}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{α}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{p}{(}\PY{n}{α} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{L}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{K}\PY{o}{*}\PY{o}{*}\PY{n}{α} \PY{o}{*} \PY{n}{L}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{α}\PY{p}{)}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{mpk}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{α}\PY{o}{*}\PY{p}{(}\PY{n}{lstar}\PY{o}{/}\PY{n}{K}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{α}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{δ}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{util}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{p}{(}\PY{n}{c}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{σ}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{σ}\PY{p}{)}
+    
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{K\PYZus{}D}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{p}{(}\PY{n}{α}\PY{o}{/}\PY{p}{(}\PY{n}{r} \PY{o}{+} \PY{n}{δ}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{α}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{lstar}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{wage}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{α}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{K}\PY{o}{/}\PY{n}{lstar}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{n}{α}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2.334990964546343
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rstar} \PY{o}{=} \PY{n}{mpk}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{rstar}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.030927835051546504
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{δ}\PY{o}{+}\PY{l+m+mf}{1E\PYZhy{}2}\PY{p}{,} \PY{n}{β}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{kgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{xi}\PY{p}{)} \PY{k}{for} \PY{n}{xi} \PY{o+ow}{in} \PY{n}{rgrid}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{166}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{kgrid}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Interest rate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Capital demand}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Demand for assets in equilibrium}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Demand for capital by firms is decreasing with the level of the interest
+rate.
+
+    \hypertarget{equilibrium-wage}{%
+\subsection{Equilibrium wage}\label{equilibrium-wage}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{167}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{wgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{wage}\PY{p}{(}\PY{n}{xi}\PY{p}{)} \PY{k}{for} \PY{n}{xi} \PY{o+ow}{in} \PY{n}{kgrid}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{168}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{wgrid}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Interest rate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wages}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Equilibrium wages as a function of interest rates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{solving-the-households-problem}{%
+\subsection{Solving the household's
+problem}\label{solving-the-households-problem}}
+
+    \hypertarget{value-function-algorithm}{%
+\subsubsection{Value function
+algorithm}\label{value-function-algorithm}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{106}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Compute value function today, from guess Value function tomorrow}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{Vendog}\PY{p}{(}\PY{n}{aplus}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{Vh}\PY{p}{,} \PY{n}{Vl}\PY{p}{,} \PY{n}{π}\PY{p}{)}\PY{p}{:}
+
+        \PY{n}{c} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{r}\PY{p}{)}\PY{o}{*}\PY{n}{a} \PY{o}{+} \PY{n}{w} \PY{o}{\PYZhy{}} \PY{n}{aplus}
+        \PY{k}{if} \PY{n}{c} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{result} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{5000000}
+    
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{today} \PY{o}{=} \PY{n}{util}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}         print(today)}
+            \PY{n}{tomorrow} \PY{o}{=} \PY{n}{β} \PY{o}{*} \PY{p}{(}\PY{n}{π}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n}{Vh} \PY{o}{+} \PY{n}{π}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{Vl}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}         print(Vtomorrow)}
+            \PY{n}{bellman} \PY{o}{=} \PY{n}{today}  \PY{o}{+} \PY{n}{tomorrow} \PY{c+c1}{\PYZsh{} avoid negative consumption}
+            \PY{n}{result} \PY{o}{=} \PY{n}{bellman}
+        
+        \PY{k}{return}  \PY{n}{result}
+    
+
+\PY{c+c1}{\PYZsh{} Backward iteration}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}\PY{p}{:}
+    \PY{n}{maxindex} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{V}\PY{p}{)}
+    \PY{n}{Vupdate}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{V}\PY{p}{)}
+    \PY{n}{Vl} \PY{o}{=} \PY{n}{V}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+    \PY{n}{Vh} \PY{o}{=} \PY{n}{V}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}
+    \PY{n}{grid} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+    \PY{n}{maxindexl} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+    \PY{n}{maxindexh} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{ia}\PY{p}{,} \PY{n}{a\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{grid}\PY{p}{)}\PY{p}{:}
+        
+        \PY{n}{valuel} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+        \PY{n}{valueh} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+        
+        \PY{k}{for} \PY{n}{ia2}\PY{p}{,} \PY{n}{a\PYZus{}cur2} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{grid}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}compute value function for all availabe saving choices}
+            \PY{n}{valuel}\PY{p}{[}\PY{n}{ia2}\PY{p}{]} \PY{o}{=} \PY{n}{Vendog}\PY{p}{(}\PY{n}{a\PYZus{}cur2}\PY{p}{,} \PY{n}{a\PYZus{}cur}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{Vh}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Vl}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Π}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+            \PY{n}{valueh}\PY{p}{[}\PY{n}{ia2}\PY{p}{]} \PY{o}{=} \PY{n}{Vendog}\PY{p}{(}\PY{n}{a\PYZus{}cur2}\PY{p}{,} \PY{n}{a\PYZus{}cur}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{Vh}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Vl}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Π}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Low value\PYZdq{}, valuel)}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}high value\PYZdq{}, valueh)}
+        \PY{c+c1}{\PYZsh{} find optimal saving decision}
+        \PY{n}{indexl}         \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{valuel}\PY{p}{)}
+        \PY{n}{indexh}         \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{valueh}\PY{p}{)}
+        \PY{n}{maxindexl}\PY{p}{[}\PY{n}{ia}\PY{p}{]}  \PY{o}{=} \PY{n}{indexl}
+        \PY{n}{maxindexh}\PY{p}{[}\PY{n}{ia}\PY{p}{]}  \PY{o}{=} \PY{n}{indexh}
+\PY{c+c1}{\PYZsh{}         print(maxindex)}
+        \PY{c+c1}{\PYZsh{} compute new value function}
+        \PY{n}{Vl}\PY{p}{[}\PY{n}{ia}\PY{p}{]}     \PY{o}{=} \PY{n}{valuel}\PY{p}{[}\PY{n}{indexl}\PY{p}{]}
+        \PY{n}{Vh}\PY{p}{[}\PY{n}{ia}\PY{p}{]}     \PY{o}{=} \PY{n}{valueh}\PY{p}{[}\PY{n}{indexh}\PY{p}{]}
+        \PY{c+c1}{\PYZsh{}             print(V[ia])}
+    
+    \PY{n}{Vupdate}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}   \PY{o}{=} \PY{n}{Vl}
+    \PY{n}{Vupdate}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}   \PY{o}{=} \PY{n}{Vh}
+    \PY{n}{policy}        \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{stack}\PY{p}{(}\PY{p}{(}\PY{n}{maxindexl}\PY{p}{,} \PY{n}{maxindexh}\PY{p}{)}\PY{p}{)}
+    \PY{n}{maxindexh} \PY{o}{=} \PY{n}{maxindexh} \PY{o}{+} \PY{n}{N}                                            \PY{c+c1}{\PYZsh{} Shift the indexing}
+    \PY{n}{maxindex}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}  \PY{o}{=} \PY{n}{maxindexl}
+    \PY{n}{maxindex}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}  \PY{o}{=} \PY{n}{maxindexh}
+
+    \PY{k}{return} \PY{n}{maxindex}\PY{p}{,} \PY{n}{Vupdate}\PY{p}{,} \PY{n}{policy}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{107}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Iteration algorithm}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}\PY{p}{:}
+    \PY{n}{maxindex} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+    \PY{n}{V}    \PY{o}{=} \PY{l+m+mf}{0.3}\PY{o}{*}\PY{n}{a}
+    \PY{n}{Vold}    \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Old V\PYZdq{}, Vold)}
+        \PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy} \PY{o}{=} \PY{n}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}New V\PYZdq{}, V)}
+\PY{c+c1}{\PYZsh{}         print(np.linalg.norm(V \PYZhy{} Vold))}
+        \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V} \PY{o}{\PYZhy{}} \PY{n}{Vold}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}10}\PY{p}{:}
+
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{convergence in}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{it}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ iterations!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{int32}\PY{p}{)}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{int32}\PY{p}{)}
+        
+
+        \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)} \PY{c+c1}{\PYZsh{} avoid updating both Vold and V by making a copy}
+        
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{108}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{300}
+\PY{n}{alow} \PY{o}{=} \PY{l+m+mf}{0.01}
+\PY{n}{aup}  \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{alow}\PY{p}{,} \PY{n}{aup}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{tile}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+
+\PY{n}{r0} \PY{o}{=} \PY{n}{mpk}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+\PY{n}{K0} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r0}\PY{p}{)}
+\PY{n}{w0} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+
+\PY{o}{\PYZpc{}}\PY{k}{time} maxindex, V\PYZus{}notax, policy = ss\PYZus{}policy(r0, w0, a, Π, N)
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 561  iterations!
+CPU times: user 3.23 s, sys: 4 ms, total: 3.23 s
+Wall time: 3.24 s
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Policy function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{V\PYZus{}notax}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Low income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{V\PYZus{}notax}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{label} \PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{High income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{p}{[}\PY{n}{maxindex}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{p}{[}\PY{n}{maxindex}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Utils}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Savings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{simulate-the-economy-to-get-steady-state-capital-level-a}{%
+\subsubsection{Simulate the economy to get steady state capital level
+A}\label{simulate-the-economy-to-get-steady-state-capital-level-a}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{109}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{update}\PY{p}{(}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{,} \PY{n}{policy}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} first get updated policy for capital}
+    \PY{n}{indexplus} \PY{o}{=} \PY{n}{policy}\PY{p}{[}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} then do random draw for the state}
+    \PY{n}{zi\PYZus{}plus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{Π}\PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{zi}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(Π[(1\PYZhy{}zi),0])}
+    \PY{k}{return} \PY{n}{zi\PYZus{}plus}\PY{p}{,} \PY{n}{indexplus}
+
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{montecarlo\PYZus{}means}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{policy}\PY{p}{,} \PY{n}{indexstart}\PY{p}{,} \PY{n}{zistart}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{T\PYZus{}drop}\PY{p}{)}\PY{p}{:}
+    
+    
+    \PY{n}{index}   \PY{o}{=}  \PY{n}{indexstart}
+    \PY{n}{zi} \PY{o}{=} \PY{n}{zistart}
+    
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+        
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{T\PYZus{}drop}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} burn\PYZhy{}in to account for non\PYZhy{}randomness of initial condition, don\PYZsq{}t use these}
+        \PY{n}{zi}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{n}{update}\PY{p}{(}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{,} \PY{n}{policy}\PY{p}{)}
+      
+    \PY{n}{asum} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{T} \PY{o}{\PYZhy{}} \PY{n}{T\PYZus{}drop}\PY{p}{)}\PY{p}{:}
+        \PY{n}{asum} \PY{o}{+}\PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{n}{index}\PY{p}{]}
+        \PY{n}{zi}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{n}{update}\PY{p}{(}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{,} \PY{n}{policy}\PY{p}{)}
+        
+    \PY{c+c1}{\PYZsh{} return averages}
+    \PY{k}{return} \PY{n}{asum}\PY{o}{/}\PY{p}{(}\PY{n}{T}\PY{o}{\PYZhy{}}\PY{n}{T\PYZus{}drop}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{110}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{indexstart} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{kstar}\PY{p}{)}\PY{p}{)}
+\PY{n}{A} \PY{o}{=} \PY{n}{montecarlo\PYZus{}means}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{policy}\PY{p}{,} \PY{n}{indexstart}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1\PYZus{}000\PYZus{}000}\PY{p}{,} \PY{l+m+mi}{10\PYZus{}000}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+6.519128320766625
+    \end{Verbatim}
+
+    \hypertarget{plot-aggregate-savings-supply-as-a-function-of-r}{%
+\paragraph{Plot aggregate savings supply as a function of
+r}\label{plot-aggregate-savings-supply-as-a-function-of-r}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{111}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{alow}\PY{o}{=}\PY{l+m+mf}{0.1}
+\PY{n}{aup}\PY{o}{=}\PY{l+m+mi}{8}
+\PY{n}{N}\PY{o}{=}\PY{l+m+mi}{300}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{alow}\PY{p}{,} \PY{n}{aup}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{tile}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Get capital supply for one value of r}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{price\PYZus{}to\PYZus{}capital}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{Π}\PY{p}{)}\PY{p}{:}
+    \PY{n}{w} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}Wage\PYZdq{}, w)}
+    \PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy} \PY{o}{=} \PY{n}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+    
+    \PY{n}{indexstart} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{kstar}\PY{p}{)}\PY{p}{)}
+    \PY{n}{A}   \PY{o}{=} \PY{n}{montecarlo\PYZus{}means}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{policy}\PY{p}{,} \PY{n}{indexstart}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1\PYZus{}000\PYZus{}000}\PY{p}{,} \PY{l+m+mi}{10\PYZus{}000}\PY{p}{)}
+        
+    \PY{k}{return} \PY{n}{A}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{79}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} @numba.jit}
+\PY{k}{def} \PY{n+nf}{capital\PYZus{}supply}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{agrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{ir}\PY{p}{,} \PY{n}{r\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}\PY{p}{:}
+        \PY{n}{agrid}\PY{p}{[}\PY{n}{ir}\PY{p}{]} \PY{o}{=} \PY{n}{price\PYZus{}to\PYZus{}capital}\PY{p}{(}\PY{n}{rgrid}\PY{p}{[}\PY{n}{ir}\PY{p}{]}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{agrid}
+
+
+    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{δ}\PY{o}{+}\PY{l+m+mf}{1E\PYZhy{}1}\PY{p}{,} \PY{n}{β}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}
+\PY{n}{agrid} \PY{o}{=} \PY{n}{capital\PYZus{}supply}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 561  iterations!
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{kgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{xi}\PY{p}{)} \PY{k}{for} \PY{n}{xi} \PY{o+ow}{in} \PY{n}{rgrid}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{agrid}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{kgrid}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Interest rate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Savings supply}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Savings supply as a function of interest rates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Aggregate saving supply is increasing with the interest rate. And it
+should intersect with the aggregate demand equation at the steady state
+level of interest rate.
+
+    \hypertarget{finding-the-stationary-equilibrium}{%
+\subsubsection{Finding the stationary
+equilibrium}\label{finding-the-stationary-equilibrium}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{112}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}compute excess supply}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{Π}\PY{p}{)}\PY{p}{:}
+    \PY{n}{A} \PY{o}{=} \PY{n}{price\PYZus{}to\PYZus{}capital}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{K} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r}\PY{p}{)}
+    \PY{n}{error} \PY{o}{=} \PY{n}{A} \PY{o}{\PYZhy{}} \PY{n}{K}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}Excess supply\PYZdq{}, error)}
+    \PY{k}{return} \PY{n}{error}
+    
+
+\PY{c+c1}{\PYZsh{} Find stationary equilibrium r by bisection}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{stationary\PYZus{}equilibrium}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n+nb}{iter}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+    \PY{n}{r0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+    \PY{n}{K0} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r0}\PY{p}{)}
+    \PY{n}{w0} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+    \PY{n}{r\PYZus{}u} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+    \PY{n}{r\PYZus{}l} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}interval: [\PYZdq{}, r\PYZus{}l, \PYZdq{},\PYZdq{}, r\PYZus{}u,\PYZdq{}]\PYZdq{})}
+    \PY{n}{r\PYZus{}m} \PY{o}{=} \PY{p}{(}\PY{n}{r\PYZus{}u} \PY{o}{+} \PY{n}{r\PYZus{}l}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}
+    \PY{n}{f\PYZus{}m} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}m}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{f\PYZus{}l} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}l}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{f\PYZus{}u} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}u}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{iteration\PYZus{}counter} \PY{o}{=} \PY{l+m+mi}{0}
+    
+    \PY{k}{if} \PY{n}{f\PYZus{}u}\PY{o}{*}\PY{n}{f\PYZus{}l} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bisection method fails.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{None}
+
+    \PY{k}{while} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{r\PYZus{}l} \PY{o}{\PYZhy{}} \PY{n}{r\PYZus{}u}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mf}{10E\PYZhy{}8} \PY{o+ow}{and} \PY{n}{iteration\PYZus{}counter} \PY{o}{\PYZlt{}} \PY{n+nb}{iter} \PY{p}{:}
+
+        \PY{k}{if} \PY{n}{f\PYZus{}l}\PY{o}{*}\PY{n}{f\PYZus{}m} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}   \PY{c+c1}{\PYZsh{} i.e. same sign}
+            \PY{n}{r\PYZus{}l} \PY{o}{=} \PY{n}{r\PYZus{}m}
+            \PY{n}{f\PYZus{}l} \PY{o}{=} \PY{n}{f\PYZus{}m}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{r\PYZus{}u} \PY{o}{=} \PY{n}{r\PYZus{}m}
+        \PY{n}{r\PYZus{}m} \PY{o}{=} \PY{p}{(}\PY{n}{r\PYZus{}u} \PY{o}{+} \PY{n}{r\PYZus{}l}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}
+        \PY{n}{f\PYZus{}m} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}m}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+        \PY{n}{iteration\PYZus{}counter} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}interval: [\PYZdq{}, r\PYZus{}l, \PYZdq{},\PYZdq{}, r\PYZus{}u,\PYZdq{}]\PYZdq{})}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{interval: [}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{r\PYZus{}l}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{r\PYZus{}u}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{]}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{convergence of bisection }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{iteration\PYZus{}counter}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{iterations!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{return} \PY{n}{r\PYZus{}m}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{113}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{δ}\PY{o}{+}\PY{l+m+mf}{1.2E\PYZhy{}1}\PY{p}{,} \PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{rstar} \PY{o}{=} \PY{n}{stationary\PYZus{}equilibrium}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 551  iterations!
+convergence in 571  iterations!
+convergence in 541  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+interval: [ 0.02110126495361327 , 0.021101322174072255 ]
+convergence of bisection  19 iterations!
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{rstar}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.021101293563842764
+    \end{Verbatim}
+
+    The interest rate in the stationary equilibrium is lower than the
+interest rate in the deterministic equilibrium. This is because risks
+generate precautionary savings, increasing the price of savings in
+equilibrium.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{114}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Kstar} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{rstar}\PY{p}{)}
+\PY{n}{w} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{Kstar}\PY{p}{)}
+\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy} \PY{o}{=} \PY{n}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{rstar}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{n}{Vl\PYZus{}notax} \PY{o}{=} \PY{n}{V\PYZus{}notax}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+\PY{n}{Vh\PYZus{}notax} \PY{o}{=} \PY{n}{V\PYZus{}notax}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}
+\PY{n}{Ul} \PY{o}{=} \PY{n}{Vl\PYZus{}notax}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{Kstar}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\PY{n}{Uh} \PY{o}{=} \PY{n}{Vh\PYZus{}notax}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{Kstar}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Ul}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 571  iterations!
+75.13832232564941
+    \end{Verbatim}
+
+    \hypertarget{aiyagari-model-with-taxes-on-capital-income}{%
+\subsection{Aiyagari model with taxes on capital
+income}\label{aiyagari-model-with-taxes-on-capital-income}}
+
+    \[
+\max_{\left\{c_t, a_{t+1}\right\}_{t=0}^\infty} \mathbb{E}_t \left[\sum_{t=0}^{\infty} \beta^t \frac{c_t^{1- \sigma}}{1-\sigma}\right]
+\] subject to:
+
+\[
+     c_t + a_{t+1}\leq (1+ r) a_t + w l_t + T,\ \forall t
+\]
+
+and the natural borrowing limit \[
+a_{t}\geq - b,\ \forall t
+\] Note that \[\min_{\mathbb{L}} income_{t} = T ,\ \forall t\]
+
+so that the natural asset limit is \[ - \frac{T}{r} \] for all
+consumers.
+
+The Bellman equation for this problem is:
+
+\[
+V(l,a) = \max_{c,a'} \left[ \frac{c^{1- \sigma}}{1-\sigma} + \beta \sum_{l' \in \mathbb{L}}  V(l',a') \Pi(l' | l) \right]
+\] subject to: \[
+ c + a' = (1+ r) a + w l + T
+\] \[
+a'\geq - \frac{T}{r}
+\]
+
+    Solving the representative firm problem the interest rate is now a
+function of taxes:
+
+\[
+r = \frac{f_k(K_t,L_t) - \delta}{1 + \tau}= \frac{ \alpha  \left(\frac{L_t}{K_t}\right)^{1 - \alpha} - \delta}{1 + \tau}
+\]
+
+    \hypertarget{demand-for-assets}{%
+\subsection{Demand for assets}\label{demand-for-assets}}
+
+Given the relationship between the interest rate and capital in
+equilibrium, demand for asset as a function of the interest rate \(r\)
+and \(\tau\) is: \[
+K(r) = \left(\frac{\alpha}{(1 + \tau)(r + \delta)}\right)^{\frac{1}{1-\alpha}} L
+\]
+
+    \hypertarget{computing-equilibrium-with-the-new-setting}{%
+\subsection{Computing equilibrium with the new
+setting}\label{computing-equilibrium-with-the-new-setting}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{115}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{τ}  \PY{o}{=} \PY{l+m+mf}{0.1}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{K\PYZus{}D}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{p}{(}\PY{n}{α}\PY{o}{/}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{τ}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{r} \PY{o}{+} \PY{n}{δ}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{α}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{lstar}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{mpk}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{p}{(}\PY{n}{α}\PY{o}{*}\PY{p}{(}\PY{n}{lstar}\PY{o}{/}\PY{n}{K}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{α}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{δ}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{τ}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{116}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Compute value function today, from guess Value function tomorrow}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{Vendog}\PY{p}{(}\PY{n}{aplus}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{tax}\PY{p}{,} \PY{n}{Vh}\PY{p}{,} \PY{n}{Vl}\PY{p}{,} \PY{n}{π}\PY{p}{)}\PY{p}{:}
+
+        \PY{n}{c} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{r}\PY{p}{)}\PY{o}{*}\PY{n}{a} \PY{o}{+} \PY{n}{w} \PY{o}{\PYZhy{}} \PY{n}{aplus} \PY{o}{+} \PY{n}{tax}
+        \PY{k}{if} \PY{n}{c} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{result} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{5000000}
+    
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{today} \PY{o}{=} \PY{n}{util}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}         print(today)}
+            \PY{n}{tomorrow} \PY{o}{=} \PY{n}{β} \PY{o}{*} \PY{p}{(}\PY{n}{π}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n}{Vh} \PY{o}{+} \PY{n}{π}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{Vl}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}         print(Vtomorrow)}
+            \PY{n}{bellman} \PY{o}{=} \PY{n}{today}  \PY{o}{+} \PY{n}{tomorrow} \PY{c+c1}{\PYZsh{} avoid negative consumption}
+            \PY{n}{result} \PY{o}{=} \PY{n}{bellman}
+        
+        \PY{k}{return}  \PY{n}{result}
+    
+
+\PY{c+c1}{\PYZsh{} Backward iteration}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}\PY{p}{:}
+    \PY{n}{tax} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{o}{*}\PY{n}{τ}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{r}\PY{p}{)}
+    \PY{n}{maxindex} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{V}\PY{p}{)}
+    \PY{n}{Vupdate}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{V}\PY{p}{)}
+    \PY{n}{Vl} \PY{o}{=} \PY{n}{V}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+    \PY{n}{Vh} \PY{o}{=} \PY{n}{V}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}
+    \PY{n}{grid} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+    \PY{n}{maxindexl} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+    \PY{n}{maxindexh} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{ia}\PY{p}{,} \PY{n}{a\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{grid}\PY{p}{)}\PY{p}{:}
+        
+        \PY{n}{valuel} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+        \PY{n}{valueh} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{grid}\PY{p}{)}
+        
+        \PY{k}{for} \PY{n}{ia2}\PY{p}{,} \PY{n}{a\PYZus{}cur2} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{grid}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}compute value function for all availabe saving choices}
+            \PY{n}{valuel}\PY{p}{[}\PY{n}{ia2}\PY{p}{]} \PY{o}{=} \PY{n}{Vendog}\PY{p}{(}\PY{n}{a\PYZus{}cur2}\PY{p}{,} \PY{n}{a\PYZus{}cur}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{tax}\PY{p}{,} \PY{n}{Vh}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Vl}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Π}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+            \PY{n}{valueh}\PY{p}{[}\PY{n}{ia2}\PY{p}{]} \PY{o}{=} \PY{n}{Vendog}\PY{p}{(}\PY{n}{a\PYZus{}cur2}\PY{p}{,} \PY{n}{a\PYZus{}cur}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{tax}\PY{p}{,} \PY{n}{Vh}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Vl}\PY{p}{[}\PY{n}{ia2}\PY{p}{]}\PY{p}{,} \PY{n}{Π}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} find optimal saving decision}
+        \PY{n}{indexl}         \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{valuel}\PY{p}{)}
+        \PY{n}{indexh}         \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{valueh}\PY{p}{)}
+        \PY{n}{maxindexl}\PY{p}{[}\PY{n}{ia}\PY{p}{]}  \PY{o}{=} \PY{n}{indexl}
+        \PY{n}{maxindexh}\PY{p}{[}\PY{n}{ia}\PY{p}{]}  \PY{o}{=} \PY{n}{indexh}
+
+        \PY{c+c1}{\PYZsh{} compute new value function}
+        \PY{n}{Vl}\PY{p}{[}\PY{n}{ia}\PY{p}{]}     \PY{o}{=} \PY{n}{valuel}\PY{p}{[}\PY{n}{indexl}\PY{p}{]}
+        \PY{n}{Vh}\PY{p}{[}\PY{n}{ia}\PY{p}{]}     \PY{o}{=} \PY{n}{valueh}\PY{p}{[}\PY{n}{indexh}\PY{p}{]}
+        \PY{c+c1}{\PYZsh{}             print(V[ia])}
+    
+    \PY{n}{Vupdate}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}   \PY{o}{=} \PY{n}{Vl}
+    \PY{n}{Vupdate}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}   \PY{o}{=} \PY{n}{Vh}
+    \PY{n}{policy}        \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{stack}\PY{p}{(}\PY{p}{(}\PY{n}{maxindexl}\PY{p}{,} \PY{n}{maxindexh}\PY{p}{)}\PY{p}{)}
+    \PY{n}{maxindexh} \PY{o}{=} \PY{n}{maxindexh} \PY{o}{+} \PY{n}{N}                                            \PY{c+c1}{\PYZsh{} Shift the indexing}
+    \PY{n}{maxindex}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}  \PY{o}{=} \PY{n}{maxindexl}
+    \PY{n}{maxindex}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}  \PY{o}{=} \PY{n}{maxindexh}
+
+    \PY{k}{return} \PY{n}{maxindex}\PY{p}{,} \PY{n}{Vupdate}\PY{p}{,} \PY{n}{policy}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{117}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Iteration algorithm}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}\PY{p}{:}
+    \PY{n}{maxindex} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+    \PY{n}{V}    \PY{o}{=} \PY{l+m+mf}{0.3}\PY{o}{*}\PY{n}{a}
+    \PY{n}{Vold}    \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Old V\PYZdq{}, Vold)}
+        \PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy} \PY{o}{=} \PY{n}{backward\PYZus{}iterate}\PY{p}{(}\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}New V\PYZdq{}, V)}
+\PY{c+c1}{\PYZsh{}         print(np.linalg.norm(V \PYZhy{} Vold))}
+        \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{V} \PY{o}{\PYZhy{}} \PY{n}{Vold}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}10}\PY{p}{:}
+
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{convergence in}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{it}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ iterations!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{maxindex}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{int32}\PY{p}{)}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{int32}\PY{p}{)}
+        
+
+        \PY{n}{Vold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{V}\PY{p}{)} \PY{c+c1}{\PYZsh{} avoid updating both Vold and V by making a copy}
+        
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{118}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{r0} \PY{o}{=} \PY{n}{mpk}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+\PY{n}{K0} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r0}\PY{p}{)}
+\PY{n}{w0} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{300}
+\PY{n}{alow} \PY{o}{=} \PY{o}{\PYZhy{}} \PY{n}{K0}\PY{o}{*}\PY{n}{τ}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{r0}\PY{p}{)}\PY{o}{/}\PY{n}{r0}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{alow}\PY{p}{)}
+\PY{n}{aup}  \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{alow}\PY{p}{,} \PY{n}{aup}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{tile}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{o}{\PYZpc{}}\PY{k}{time} maxindex, V, policy = ss\PYZus{}policy(r0, w0, a, Π, N)
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-7.686109836362195
+convergence in 581  iterations!
+CPU times: user 3.3 s, sys: 8 ms, total: 3.31 s
+Wall time: 3.32 s
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Policy function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Low income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{V}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{label} \PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{High income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{p}{[}\PY{n}{maxindex}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{p}{[}\PY{n}{maxindex}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Utils}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Savings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_46_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{119}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{indexstart} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{kstar}\PY{p}{)}\PY{p}{)}
+\PY{n}{A} \PY{o}{=} \PY{n}{montecarlo\PYZus{}means}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{policy}\PY{p}{,} \PY{n}{indexstart}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1\PYZus{}000\PYZus{}000}\PY{p}{,} \PY{l+m+mi}{10\PYZus{}000}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-3.184734021700767
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{120}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{update}\PY{p}{(}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{,} \PY{n}{policy}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} first get updated policy for capital}
+    \PY{n}{indexplus} \PY{o}{=} \PY{n}{policy}\PY{p}{[}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} then do random draw for the state}
+    \PY{n}{zi\PYZus{}plus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{Π}\PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{zi}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(Π[(1\PYZhy{}zi),0])}
+    \PY{k}{return} \PY{n}{zi\PYZus{}plus}\PY{p}{,} \PY{n}{indexplus}
+
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{montecarlo\PYZus{}means}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{policy}\PY{p}{,} \PY{n}{indexstart}\PY{p}{,} \PY{n}{zistart}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{T\PYZus{}drop}\PY{p}{)}\PY{p}{:}
+    
+    
+    \PY{n}{index}   \PY{o}{=}  \PY{n}{indexstart}
+    \PY{n}{zi} \PY{o}{=} \PY{n}{zistart}
+    
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+        
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{T\PYZus{}drop}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} burn\PYZhy{}in to account for non\PYZhy{}randomness of initial condition, don\PYZsq{}t use these}
+        \PY{n}{zi}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{n}{update}\PY{p}{(}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{,} \PY{n}{policy}\PY{p}{)}
+      
+    \PY{n}{asum} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{T} \PY{o}{\PYZhy{}} \PY{n}{T\PYZus{}drop}\PY{p}{)}\PY{p}{:}
+        \PY{n}{asum} \PY{o}{+}\PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{n}{index}\PY{p}{]}
+        \PY{n}{zi}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{n}{update}\PY{p}{(}\PY{n}{zi}\PY{p}{,} \PY{n}{index}\PY{p}{,} \PY{n}{policy}\PY{p}{)}
+        
+    \PY{c+c1}{\PYZsh{} return averages}
+    \PY{k}{return} \PY{n}{asum}\PY{o}{/}\PY{p}{(}\PY{n}{T}\PY{o}{\PYZhy{}}\PY{n}{T\PYZus{}drop}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{121}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N}\PY{o}{=}\PY{l+m+mi}{300}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{alow}\PY{p}{,} \PY{n}{aup}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{tile}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Get capital supply for one value of r}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{price\PYZus{}to\PYZus{}capital}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{Π}\PY{p}{)}\PY{p}{:}
+    \PY{n}{w} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}Wage\PYZdq{}, w)}
+    \PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy} \PY{o}{=} \PY{n}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+    
+    \PY{n}{indexstart} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{kstar}\PY{p}{)}\PY{p}{)}
+    \PY{n}{A}   \PY{o}{=} \PY{n}{montecarlo\PYZus{}means}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{policy}\PY{p}{,} \PY{n}{indexstart}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1\PYZus{}000\PYZus{}000}\PY{p}{,} \PY{l+m+mi}{10\PYZus{}000}\PY{p}{)}
+        
+    \PY{k}{return} \PY{n}{A}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{122}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} @numba.jit}
+\PY{k}{def} \PY{n+nf}{capital\PYZus{}supply}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{agrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{ir}\PY{p}{,} \PY{n}{r\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}\PY{p}{:}
+        \PY{n}{agrid}\PY{p}{[}\PY{n}{ir}\PY{p}{]} \PY{o}{=} \PY{n}{price\PYZus{}to\PYZus{}capital}\PY{p}{(}\PY{n}{rgrid}\PY{p}{[}\PY{n}{ir}\PY{p}{]}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{agrid}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N}\PY{o}{=}\PY{l+m+mi}{300}
+\PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{δ}\PY{o}{+}\PY{l+m+mf}{1E\PYZhy{}1}\PY{p}{,} \PY{n}{β}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}
+\PY{n}{agrid} \PY{o}{=} \PY{n}{capital\PYZus{}supply}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 581  iterations!
+convergence in 581  iterations!
+convergence in 581  iterations!
+convergence in 581  iterations!
+convergence in 581  iterations!
+convergence in 561  iterations!
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{kgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{xi}\PY{p}{)} \PY{k}{for} \PY{n}{xi} \PY{o+ow}{in} \PY{n}{rgrid}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{agrid}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{kgrid}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Interest rate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Savings supply}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Savings supply as a function of interest rates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_52_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{123}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}compute excess supply}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{Π}\PY{p}{)}\PY{p}{:}
+    \PY{n}{A} \PY{o}{=} \PY{n}{price\PYZus{}to\PYZus{}capital}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{K} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r}\PY{p}{)}
+    \PY{n}{error} \PY{o}{=} \PY{n}{A} \PY{o}{\PYZhy{}} \PY{n}{K}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}Excess supply\PYZdq{}, error)}
+    \PY{k}{return} \PY{n}{error}
+    
+
+\PY{c+c1}{\PYZsh{} Find stationary equilibrium r by bisection}
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{stationary\PYZus{}equilibrium}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n+nb}{iter}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+    \PY{n}{r0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+    \PY{n}{K0} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{r0}\PY{p}{)}
+    \PY{n}{w0} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{kstar}\PY{p}{)}
+    \PY{n}{r\PYZus{}u} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+    \PY{n}{r\PYZus{}l} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}interval: [\PYZdq{}, r\PYZus{}l, \PYZdq{},\PYZdq{}, r\PYZus{}u,\PYZdq{}]\PYZdq{})}
+    \PY{n}{r\PYZus{}m} \PY{o}{=} \PY{p}{(}\PY{n}{r\PYZus{}u} \PY{o}{+} \PY{n}{r\PYZus{}l}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}
+    \PY{n}{f\PYZus{}m} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}m}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{f\PYZus{}l} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}l}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{f\PYZus{}u} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}u}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+    \PY{n}{iteration\PYZus{}counter} \PY{o}{=} \PY{l+m+mi}{0}
+    
+    \PY{k}{if} \PY{n}{f\PYZus{}u}\PY{o}{*}\PY{n}{f\PYZus{}l} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bisection method fails.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{return} \PY{k+kc}{None}
+
+    \PY{k}{while} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{r\PYZus{}l} \PY{o}{\PYZhy{}} \PY{n}{r\PYZus{}u}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mf}{10E\PYZhy{}8} \PY{o+ow}{and} \PY{n}{iteration\PYZus{}counter} \PY{o}{\PYZlt{}} \PY{n+nb}{iter} \PY{p}{:}
+
+        \PY{k}{if} \PY{n}{f\PYZus{}l}\PY{o}{*}\PY{n}{f\PYZus{}m} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}   \PY{c+c1}{\PYZsh{} i.e. same sign}
+            \PY{n}{r\PYZus{}l} \PY{o}{=} \PY{n}{r\PYZus{}m}
+            \PY{n}{f\PYZus{}l} \PY{o}{=} \PY{n}{f\PYZus{}m}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{r\PYZus{}u} \PY{o}{=} \PY{n}{r\PYZus{}m}
+        \PY{n}{r\PYZus{}m} \PY{o}{=} \PY{p}{(}\PY{n}{r\PYZus{}u} \PY{o}{+} \PY{n}{r\PYZus{}l}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}
+        \PY{n}{f\PYZus{}m} \PY{o}{=} \PY{n}{excess\PYZus{}supply}\PY{p}{(}\PY{n}{r\PYZus{}m}\PY{p}{,} \PY{n}{Π}\PY{p}{)}
+        \PY{n}{iteration\PYZus{}counter} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{interval: [}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{r\PYZus{}l}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{r\PYZus{}u}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{]}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{convergence of bisection }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{iteration\PYZus{}counter}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{iterations!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{return} \PY{n}{r\PYZus{}m}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{124}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{δ}\PY{o}{+}\PY{l+m+mf}{1.2E\PYZhy{}1}\PY{p}{,} \PY{n}{β}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{rstar\PYZus{}tax} \PY{o}{=} \PY{n}{stationary\PYZus{}equilibrium}\PY{p}{(}\PY{n}{rgrid}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 581  iterations!
+convergence in 571  iterations!
+convergence in 561  iterations!
+convergence in 581  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 561  iterations!
+convergence in 571  iterations!
+convergence in 571  iterations!
+interval: [ 0.030568998671069696 , 0.030569082043834676 ]
+convergence of bisection  17 iterations!
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{125}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Interest rate in equilibrium with no taxes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{rstar}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+      \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Interest rate in equilibrium with taxes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{rstar\PYZus{}tax}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Interest rate in equilibrium with no taxes 0.021101293563842764
+ Interest rate in equilibrium with taxes 0.030569040357452185
+    \end{Verbatim}
+
+    The interest rate in the stationary equilibrium is lower than the
+interest rate in the deterministic equilibrium. This is because risks
+associated with no borrowing constraint generate precautionary savings
+with all agents over-saving in equilibrium.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{126}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Kstar\PYZus{}tax} \PY{o}{=} \PY{n}{K\PYZus{}D}\PY{p}{(}\PY{n}{rstar\PYZus{}tax}\PY{p}{)}
+\PY{n}{w} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{Kstar\PYZus{}tax}\PY{p}{)}
+\PY{n}{maxindex}\PY{p}{,} \PY{n}{V}\PY{p}{,} \PY{n}{policy} \PY{o}{=} \PY{n}{ss\PYZus{}policy}\PY{p}{(}\PY{n}{rstar\PYZus{}tax}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{Π}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+
+\PY{n}{Vl\PYZus{}tax} \PY{o}{=} \PY{n}{V}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Vl\PYZus{}tax}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{n}{Vh\PYZus{}tax} \PY{o}{=} \PY{n}{V}\PY{p}{[}\PY{n}{N}\PY{p}{:}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Vh\PYZus{}tax}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{n}{Ul\PYZus{}tax} \PY{o}{=} \PY{n}{Vl\PYZus{}tax}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{Kstar\PYZus{}tax}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\PY{n}{Uh\PYZus{}tax} \PY{o}{=} \PY{n}{Vh\PYZus{}tax}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{Kstar\PYZus{}tax}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 571  iterations!
+(300,)
+(300,)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{129}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Value in equilibrium with taxes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{Ul\PYZus{}tax}\PY{p}{,} \PY{n}{Uh\PYZus{}tax}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+      \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Value in equilibrium with no taxes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{Ul}\PY{p}{,} \PY{n}{Uh}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Value in equilibrium with taxes: Unemployed: 80.85108460712318, Employed: 82.2482988803689
+ Value in equilibrium with no taxes Unemployed: 75.13832232564941, Employed: 76.85597073343098
+    \end{Verbatim}
+
+    The value function is higher for both types of consumers under the
+capital income tax regime. Indeed, the tax transfer loosen the borrowing
+constraint and allows consumers to better smooth labor income shocks over
+time so as to maximize their utility.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
