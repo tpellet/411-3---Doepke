@@ -1,0 +1,1251 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Problem Set 3 - 411-3 - Salas Pellet}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{optimize}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{stats}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numba}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{interpolate}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{aiyagari-model-with-aggregate-uncertainty}{%
+\section{Aiyagari Model with Aggregate
+Uncertainty}\label{aiyagari-model-with-aggregate-uncertainty}}
+
+    \[
+\max_{\left\{c_t, a_{t+1}\right\}_{t=0}^\infty} \mathbb{E}_t \left[\sum_{t=0}^{\infty} \beta^t \ln c_t\right]
+\] subject to:
+
+\[
+ c_t + k_{t+1}\leq r_t k_t + w l_t + (1 - \delta) k_t ,\ \forall t
+\] where \$ \mathbb{L} = \{0,1\}\$
+
+and the natural borrowing limit \[
+a_{t}\geq - b,\ \forall t
+\] Note that \[\min_{\mathbb{L}} l_{t} = 0 ,\ \forall t\]
+
+so that the natural debt limit is 0 for all consumers.
+
+The Bellman equation for this problem is:
+
+\[
+V(l,a,z,K) = \max_{c,a'} \left[ \frac{c^{1- \sigma}}{1-\sigma} + \beta \sum_{l' \in \mathbb{L}, z' \in \mathbb{Z}}  V(l',a',z',K') \Pi(l',z' | l, z) \right]
+\] subject to: \[
+ c + a' = (1+r(K,z)) a + w(K,z) l
+\] \[
+a'\geq - b
+\] \[
+\ln(K') = \alpha(z) + \beta(z) \ln(K)
+\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{β}  \PY{o}{=} \PY{l+m+mf}{0.99}
+\PY{n}{α}  \PY{o}{=} \PY{l+m+mf}{0.36}
+\PY{n}{δ}  \PY{o}{=} \PY{l+m+mf}{0.025}
+
+\PY{c+c1}{\PYZsh{} Aggregate and idiosyncratic shocks}
+\PY{n}{Z}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{1.01}\PY{p}{,} \PY{l+m+mf}{0.99}\PY{p}{]}\PY{p}{)}
+\PY{n}{π}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{7}\PY{o}{/}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{7}\PY{o}{/}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{L}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Π  = np.array([[0.8507, 0.1229, 7/12, 3/32],}
+\PY{c+c1}{\PYZsh{}               [0.1159, 0.8361, 1/32, 7/20],}
+\PY{c+c1}{\PYZsh{}               [0.0243, 0.0021, 7/24, 1/32],}
+\PY{c+c1}{\PYZsh{}               [0.0091, 0.0389, 3/32, 21/40]])}
+\PY{n}{Π}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{p}{[}\PY{l+m+mf}{0.8507}\PY{p}{,} \PY{l+m+mf}{0.1159}\PY{p}{,} \PY{l+m+mf}{0.0243}\PY{p}{,} \PY{l+m+mf}{0.0091}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mf}{0.1229}\PY{p}{,} \PY{l+m+mf}{0.8361}\PY{p}{,} \PY{l+m+mf}{0.0021}\PY{p}{,} \PY{l+m+mf}{0.0389}\PY{p}{]}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{7}\PY{o}{/}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{32}\PY{p}{,} \PY{l+m+mi}{7}\PY{o}{/}\PY{l+m+mi}{24}\PY{p}{,} \PY{l+m+mi}{3}\PY{o}{/}\PY{l+m+mi}{32}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{3}\PY{o}{/}\PY{l+m+mi}{32}\PY{p}{,} \PY{l+m+mi}{7}\PY{o}{/}\PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{32}\PY{p}{,} \PY{l+m+mi}{21}\PY{o}{/}\PY{l+m+mi}{40}\PY{p}{]}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Unemployment levels conditional on aggregate state}
+\PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{o}{.}\PY{l+m+mi}{04}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{lstar} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{U}
+\PY{n}{kstar} \PY{o}{=} \PY{p}{(} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{β} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{o}{+}\PY{n}{δ}\PY{p}{)} \PY{o}{/}\PY{p}{(}\PY{n}{α}\PY{o}{*}\PY{p}{(}\PY{n}{lstar}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{α}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{/} \PY{p}{(}\PY{n}{α} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(kstar)}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{labor}\PY{p}{(}\PY{n}{z}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{z} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{k}{return} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.04}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.1}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{z}\PY{p}{)}\PY{p}{:}
+    \PY{n}{Lsupply} \PY{o}{=} \PY{n}{labor}\PY{p}{(}\PY{n}{z}\PY{p}{)}
+    \PY{k}{return} \PY{n}{z} \PY{o}{*} \PY{n}{K}\PY{o}{*}\PY{o}{*}\PY{n}{α} \PY{o}{*} \PY{n}{Lsupply}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{α}\PY{p}{)}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{mpk}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{z}\PY{p}{)}\PY{p}{:}
+    \PY{n}{Lsupply} \PY{o}{=} \PY{n}{labor}\PY{p}{(}\PY{n}{z}\PY{p}{)}
+    \PY{k}{return} \PY{n}{α} \PY{o}{*} \PY{n}{z} \PY{o}{*}\PY{p}{(}\PY{n}{Lsupply}\PY{o}{/}\PY{n}{K}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{α}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{δ}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{util}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{c}\PY{p}{,} \PY{l+m+mf}{1E\PYZhy{}10}\PY{p}{)}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{} @numba.njit}
+\PY{c+c1}{\PYZsh{} def K\PYZus{}D(r, z):}
+\PY{c+c1}{\PYZsh{}     return (α/(r + δ))**(1/(1\PYZhy{}α)) * lstar}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{wage}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{z}\PY{p}{)}\PY{p}{:}
+    \PY{n}{Lsupply} \PY{o}{=} \PY{n}{labor}\PY{p}{(}\PY{n}{z}\PY{p}{)}
+    \PY{k}{return} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{α}\PY{p}{)} \PY{o}{*} \PY{n}{z} \PY{o}{*} \PY{p}{(}\PY{n}{K}\PY{o}{/}\PY{n}{Lsupply}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{n}{α}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{K\PYZus{}LOM}\PY{p}{(}\PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{K}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{alpha} \PY{o}{+} \PY{n}{beta} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{K}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{build\PYZus{}grid}\PY{p}{(}\PY{n}{Nk}\PY{p}{,} \PY{n}{NK}\PY{p}{,} \PY{n}{klbar}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{kubar}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{Klbar}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{Kubar}\PY{o}{=}\PY{l+m+mi}{80}\PY{p}{)}\PY{p}{:}
+    \PY{n}{grid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{Klbar}\PY{p}{,} \PY{n}{Kubar}\PY{p}{,} \PY{n}{NK}\PY{p}{)}
+    \PY{n}{K} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{repeat}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{k} \PY{o}{=} \PY{n}{klbar} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{divide}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{Nk}\PY{p}{)}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{7} \PY{o}{*} \PY{p}{(}\PY{n}{kubar} \PY{o}{\PYZhy{}} \PY{n}{klbar}\PY{p}{)}
+    \PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{repeat}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{repeat}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{n}{k} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{repeat}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+    \PY{k}{return} \PY{n}{K}\PY{p}{,} \PY{n}{k}
+
+\PY{n}{K}\PY{p}{,} \PY{n}{k} \PY{o}{=} \PY{n}{build\PYZus{}grid}\PY{p}{(}\PY{l+m+mi}{101}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Initial guess law of motion for capital}
+\PY{n}{alpha\PYZus{}guess}     \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{beta\PYZus{}guess}      \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1} \PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{test} \PY{o}{=} \PY{n}{alpha\PYZus{}guess} \PY{o}{+} \PY{n}{beta\PYZus{}guess} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{K}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(alpha\PYZus{}g)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{solving-step-2-finding-the-policy-functions}{%
+\subsection{Solving step 2: Finding the policy
+functions}\label{solving-step-2-finding-the-policy-functions}}
+
+    \hypertarget{deriving-the-euler-equation-and-household-budget-constraint}{%
+\subsubsection{Deriving the Euler equation and household budget
+constraint}\label{deriving-the-euler-equation-and-household-budget-constraint}}
+
+    The euler equation is given by:
+
+\[
+u'(c(k,K,s,z)) = \beta \mathbb{E}_{s,z} \left(f_k(K_+, L_+, z_+) \ u'\left[c(k_+(k, K, s, z),K_+,s_+,z_+) \right] \right)
+\]
+
+and the budget constraint is:
+
+\[
+ c + k_+\leq r(K,L,z) k + w(K,L,z) l(s) + (1 - \delta) k ,\ \forall t
+\]
+
+    Abstracting from L and z, our guess gives us \(k_+(k,K)\), a function of
+individual and aggregate capital. Fitting a bivariate spline over k and
+K we know have an approximation function \(g(k, K)\) for any point on
+the grid. Iterating forward the approximate policy function we get
+\(k_{++}(k_{+}, K_{+}) = g(g(k, K), K_+(K))\). Note that
+\(K_+(K) = \alpha + \beta K\) is not a free element. It is pinned downed
+by the choice of K the period before. Only k is chosen on the grid by
+the agent.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Fit bivariate spline over all states. }
+\PY{k}{def} \PY{n+nf}{multispline}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{Y}\PY{p}{)}\PY{p}{:}
+
+    \PY{n}{tck} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{il}\PY{p}{,} \PY{n}{li} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{:}
+        \PY{n}{tckiz} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{k}{for} \PY{n}{iz}\PY{p}{,} \PY{n}{zi} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{:}
+            \PY{n}{tckiz}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{interpolate}\PY{o}{.}\PY{n}{RectBivariateSpline}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{K}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{iz}\PY{p}{]}\PY{p}{,} \PY{n}{Y}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{p}{:}\PY{p}{,}\PY{n}{il}\PY{p}{,}\PY{n}{iz}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{n}{tck}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{tckiz}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{tck}
+
+
+
+\PY{c+c1}{\PYZsh{}Evaluate the spline over all states}
+\PY{k}{def} \PY{n+nf}{multispline\PYZus{}eval}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{Kplus}\PY{p}{,} \PY{n}{tck}\PY{p}{)}\PY{p}{:}
+
+    \PY{n}{output} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{k}{for} \PY{n}{iK}\PY{p}{,} \PY{n}{Ki} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{Kplus}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{il}\PY{p}{,} \PY{n}{li} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{:}
+            \PY{k}{for} \PY{n}{iz}\PY{p}{,} \PY{n}{zi} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{:}
+                \PY{n}{output}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{iK}\PY{p}{,}\PY{n}{il}\PY{p}{,}\PY{n}{iz}\PY{p}{]} \PY{o}{=}  \PY{n}{tck}\PY{p}{[}\PY{n}{il}\PY{p}{]}\PY{p}{[}\PY{n}{iz}\PY{p}{]}\PY{p}{(}\PY{n}{kplus}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{iK}\PY{p}{,}\PY{n}{il}\PY{p}{,}\PY{n}{iz}\PY{p}{]}\PY{p}{,} \PY{n}{Kplus}\PY{p}{[}\PY{n}{iK}\PY{p}{,}\PY{n}{iz}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} For a given K and so a given Kprime}
+
+    \PY{k}{return} \PY{n}{output}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{BC}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{kplus}\PY{p}{,} \PY{n}{kpplus}\PY{p}{)}\PY{p}{:}
+    \PY{n}{income} \PY{o}{=} \PY{n}{L}\PY{o}{*}\PY{n}{w} \PY{o}{+} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{r} \PY{o}{\PYZhy{}} \PY{n}{δ}\PY{p}{)}\PY{o}{*}\PY{n}{kplus}
+    \PY{n}{c}  \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{income} \PY{o}{\PYZhy{}} \PY{n}{kpplus}\PY{p}{,} \PY{l+m+mf}{10E\PYZhy{}10}\PY{p}{)}
+    \PY{k}{return} \PY{n}{c}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{BCK}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
+    \PY{n}{income} \PY{o}{=} \PY{n}{L}\PY{o}{*}\PY{n}{w} \PY{o}{+} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{r} \PY{o}{\PYZhy{}} \PY{n}{δ}\PY{p}{)}\PY{o}{*}\PY{n}{k}
+    \PY{n}{kup}  \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{income} \PY{o}{\PYZhy{}} \PY{n}{c}\PY{p}{,} \PY{l+m+mf}{10E\PYZhy{}10}\PY{p}{)}
+    \PY{k}{return} \PY{n}{kup}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{Euler}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{kpplus}\PY{p}{,} \PY{n}{Kplus}\PY{p}{,} \PY{n}{transition}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{index} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n}{income} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{n}{cplus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{income}\PY{p}{)}
+    \PY{n}{Uplus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{income}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{indexL}\PY{p}{,} \PY{n}{L\PYZus{}curr} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{:}
+
+        \PY{k}{for} \PY{n}{indexZ}\PY{p}{,} \PY{n}{Z\PYZus{}curr} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{:}
+
+            \PY{n}{wplus} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{Kplus}\PY{p}{,} \PY{n}{Z\PYZus{}curr}\PY{p}{)}
+            \PY{n}{rplus} \PY{o}{=} \PY{n}{mpk}\PY{p}{(}\PY{n}{Kplus}\PY{p}{,} \PY{n}{Z\PYZus{}curr}\PY{p}{)}
+            \PY{n}{cplus}\PY{p}{[}\PY{n}{index}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}  \PY{o}{=} \PY{n}{BC}\PY{p}{(}\PY{n}{wplus}\PY{p}{,} \PY{n}{rplus}\PY{p}{,} \PY{n}{L\PYZus{}curr}\PY{p}{,} \PY{n}{kplus}\PY{p}{,} \PY{n}{kpplus}\PY{p}{[}\PY{n}{indexL}\PY{p}{,} \PY{n}{indexZ}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}Budget constraint tomorrow}
+            \PY{n}{Uplus}\PY{p}{[}\PY{n}{index}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}  \PY{o}{=} \PY{n}{cplus}\PY{p}{[}\PY{n}{index}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{rplus}\PY{o}{\PYZhy{}}\PY{n}{δ}\PY{p}{)}
+            
+            \PY{n}{index} \PY{o}{=} \PY{n}{index} \PY{o}{+} \PY{l+m+mi}{1}
+    
+    
+    \PY{c+c1}{\PYZsh{} Get consumption from Euler}
+    \PY{n}{expectedU} \PY{o}{=} \PY{n}{transition}\PY{o}{.}\PY{n}{T} \PY{o}{@} \PY{n}{Uplus}
+    \PY{n}{euler} \PY{o}{=} \PY{n}{expectedU} \PY{o}{/} \PY{n}{β}
+    \PY{k}{return} \PY{n}{euler}
+
+
+
+
+\PY{c+c1}{\PYZsh{} @numba.njit}
+\PY{k}{def} \PY{n+nf}{backward\PYZus{}iterate\PYZus{}II}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{alpha\PYZus{}guess}\PY{p}{,} \PY{n}{beta\PYZus{}guess}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} init}
+    \PY{n}{kpplus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{kplus}\PY{p}{)}
+    \PY{n}{cendog} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{kplus}\PY{p}{)}
+    \PY{n}{kendog} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{kplus}\PY{p}{)}
+    \PY{n}{cplus}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{kplus}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{}Using aggregate law of motion}
+    \PY{n}{Kplus}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{alpha\PYZus{}guess} \PY{o}{+} \PY{n}{beta\PYZus{}guess} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} restrict Kplus to fall into bounds}
+\PY{c+c1}{\PYZsh{}     Kplus = np.minimum(Kplus, 80)}
+\PY{c+c1}{\PYZsh{}     Kplus = np.maximum(Kplus, 10)}
+\PY{c+c1}{\PYZsh{}     print(Kplus)}
+    
+    \PY{c+c1}{\PYZsh{} Use policy function to get K\PYZsq{}\PYZsq{}}
+    
+    \PY{n}{tck} \PY{o}{=} \PY{n}{multispline}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{kplus}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(kpplus)}
+    \PY{n}{kpplus} \PY{o}{=} \PY{n}{multispline\PYZus{}eval}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{Kplus}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Use BC tomorrow, Euler today and BC today to get back policy func}
+    \PY{k}{for} \PY{n}{iZ}\PY{p}{,} \PY{n}{Z\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{:}
+        
+        \PY{k}{for} \PY{n}{iK}\PY{p}{,} \PY{n}{K\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{K}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{iZ}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+
+            \PY{n}{w} \PY{o}{=} \PY{n}{wage}\PY{p}{(}\PY{n}{K\PYZus{}cur}\PY{p}{,} \PY{n}{Z\PYZus{}cur}\PY{p}{)}
+            \PY{n}{r} \PY{o}{=} \PY{n}{mpk}\PY{p}{(}\PY{n}{K\PYZus{}cur}\PY{p}{,} \PY{n}{Z\PYZus{}cur}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{}Compute possible future incomes}
+            \PY{k}{for} \PY{n}{iL}\PY{p}{,} \PY{n}{L\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{:}
+
+                \PY{k}{for} \PY{n}{ik}\PY{p}{,} \PY{n}{k\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{transition}   \PY{o}{=} \PY{n}{Π}\PY{p}{[}\PY{n}{iL}\PY{p}{]}\PY{p}{[}\PY{n}{iZ}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}
+                    \PY{n}{cendog}\PY{p}{[}\PY{n}{ik}\PY{p}{,} \PY{n}{iK}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}   \PY{o}{=} \PY{n}{Euler}\PY{p}{(}\PY{n}{kplus}\PY{p}{[}\PY{n}{ik}\PY{p}{,} \PY{n}{iK}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}\PY{p}{,} \PY{n}{kpplus}\PY{p}{[}\PY{n}{ik}\PY{p}{,} \PY{n}{iK}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{Kplus}\PY{p}{[}\PY{n}{iK}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}\PY{p}{,} \PY{n}{transition}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Euler equation today}
+                    \PY{n}{kendog}\PY{p}{[}\PY{n}{ik}\PY{p}{,} \PY{n}{iK}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}   \PY{o}{=} \PY{n}{BCK}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{L\PYZus{}cur}\PY{p}{,} \PY{n}{cendog}\PY{p}{[}\PY{n}{ik}\PY{p}{,} \PY{n}{iK}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}\PY{p}{,} \PY{n}{k\PYZus{}cur}\PY{p}{)} \PY{c+c1}{\PYZsh{} Budget constraint today lower bar = 0, upper bar to define}
+
+    \PY{k}{return} \PY{n}{kendog}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{81}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{ss\PYZus{}policy\PYZus{}II}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{alpha\PYZus{}guess}\PY{p}{,} \PY{n}{beta\PYZus{}guess}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{kplus} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{o}{*}\PY{n}{k}
+    \PY{n}{knew} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{kplus}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3000}\PY{p}{)}\PY{p}{:}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Iteration number:\PYZdq{}, it)}
+        \PY{n}{knew} \PY{o}{=} \PY{n}{backward\PYZus{}iterate\PYZus{}II}\PY{p}{(}\PY{n}{kplus}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{alpha\PYZus{}guess}\PY{p}{,} \PY{n}{beta\PYZus{}guess}\PY{p}{)}
+        \PY{k}{if} \PY{n}{knew} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Did not converge}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{knew}\PY{p}{)}
+            \PY{k}{break}
+\PY{c+c1}{\PYZsh{}         print(np.linalg.norm(knew \PYZhy{} kplus))}
+\PY{c+c1}{\PYZsh{}         print(np.linalg.norm(knew \PYZhy{} kplus))}
+        \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{knew} \PY{o}{\PYZhy{}} \PY{n}{kplus}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{1E\PYZhy{}5}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{convergence in }\PY{l+s+si}{\PYZob{}}\PY{n}{it}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ iterations!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{tck\PYZus{}out} \PY{o}{=} \PY{n}{multispline}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{knew}\PY{p}{)}
+            \PY{k}{return} \PY{n}{tck\PYZus{}out}
+        
+        \PY{n}{kplus} \PY{o}{=} \PY{l+m+mf}{0.4}\PY{o}{*}\PY{n}{knew} \PY{o}{+} \PY{l+m+mf}{0.6}\PY{o}{*}\PY{n}{kplus}
+    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{time} tck = ss\PYZus{}policy\PYZus{}II(k, K, alpha\PYZus{}guess, beta\PYZus{}guess)
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+convergence in 531 iterations!
+CPU times: user 9.01 s, sys: 3.97 ms, total: 9.01 s
+Wall time: 9.02 s
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{savings} \PY{o}{=} \PY{n}{multispline\PYZus{}eval}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
+
+
+\PY{k}{def} \PY{n+nf}{savings\PYZus{}to\PYZus{}c}\PY{p}{(}\PY{n}{savings}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{tck}\PY{p}{)}\PY{p}{:}
+    \PY{n}{c}       \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{savings}\PY{p}{)}
+    \PY{k}{for} \PY{n}{iL}\PY{p}{,} \PY{n}{L\PYZus{}curr} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{iZ}\PY{p}{,} \PY{n}{Z\PYZus{}curr} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{:}
+            \PY{k}{for} \PY{n}{iK}\PY{p}{,} \PY{n}{K\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{K}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{iZ}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{ik}\PY{p}{,} \PY{n}{k\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{c}\PY{p}{[}\PY{n}{ik}\PY{p}{,} \PY{n}{iK}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]} \PY{o}{=} \PY{n}{BC}\PY{p}{(}\PY{n}{wage}\PY{p}{(}\PY{n}{K\PYZus{}cur}\PY{p}{,} \PY{n}{Z\PYZus{}curr}\PY{p}{)}\PY{p}{,} \PY{n}{mpk}\PY{p}{(}\PY{n}{K\PYZus{}cur}\PY{p}{,} \PY{n}{Z\PYZus{}curr}\PY{p}{)}\PY{p}{,} \PY{n}{L\PYZus{}curr}\PY{p}{,} \PY{n}{k\PYZus{}cur}\PY{p}{,} \PY{n}{savings}\PY{p}{[}\PY{n}{ik}\PY{p}{,} \PY{n}{iK}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{c}
+
+\PY{n}{c} \PY{o}{=} \PY{n}{savings\PYZus{}to\PYZus{}c}\PY{p}{(}\PY{n}{savings}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{tck}\PY{p}{)}
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Consumption}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Savings}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{iL}\PY{p}{,} \PY{n}{L\PYZus{}curr} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{iZ}\PY{p}{,} \PY{n}{Z\PYZus{}curr} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{Z}\PY{p}{)}\PY{p}{:}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}L = }\PY{l+s+si}{\PYZob{}j\PYZcb{}}\PY{l+s+s1}{, Z= }\PY{l+s+si}{\PYZob{}i\PYZcb{}}\PY{l+s+s1}{ \PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{j}\PY{o}{=}\PY{n}{L\PYZus{}curr}\PY{p}{,} \PY{n}{i}\PY{o}{=}\PY{n}{Z\PYZus{}curr}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{savings}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,} \PY{n}{iL}\PY{p}{,} \PY{n}{iZ}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Consumption}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Savings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Consumption}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Savings}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{iK}\PY{p}{,} \PY{n}{K\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{K}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{iK}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}K = }\PY{l+s+si}{\PYZob{}j\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{j}\PY{o}{=}\PY{n}{K\PYZus{}cur}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{savings}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{iK}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{ax1}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Consumption}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Savings}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{solve-the-model}{%
+\subsection{Solve the model}\label{solve-the-model}}
+
+    \hypertarget{draw-random-aggregate-and-idiosyncratic-shocks-to-simulate-aggregate-economy}{%
+\subsubsection{Draw random aggregate and idiosyncratic shocks to
+simulate aggregate
+economy}\label{draw-random-aggregate-and-idiosyncratic-shocks-to-simulate-aggregate-economy}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{90}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{update}\PY{p}{(}\PY{n}{iz}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} then do random draw for the state}
+    \PY{n}{iz\PYZus{}plus} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{π}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{iz}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{iz\PYZus{}plus}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{update\PYZus{}idio}\PY{p}{(}\PY{n}{il}\PY{p}{,} \PY{n}{iz}\PY{p}{,} \PY{n}{iz\PYZus{}plus}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} then do random draw for the state}
+    \PY{n}{transition} \PY{o}{=} \PY{n}{Π}\PY{p}{[}\PY{n}{il}\PY{p}{]}\PY{p}{[}\PY{n}{iz}\PY{p}{]}         \PY{c+c1}{\PYZsh{}Select states today and proba of healthy tomorrow}
+    \PY{n}{P} \PY{o}{=} \PY{n}{transition}\PY{p}{[}\PY{n}{iz\PYZus{}plus}\PY{p}{]}
+    \PY{n}{Pc} \PY{o}{=} \PY{n}{transition}\PY{p}{[}\PY{n}{iz\PYZus{}plus} \PY{o}{+} \PY{l+m+mi}{2}\PY{p}{]}
+    \PY{n}{norm} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{transition}\PY{p}{)}
+    \PY{n}{P} \PY{o}{=} \PY{n}{P}\PY{o}{/}\PY{p}{(}\PY{n}{P}\PY{o}{+}\PY{n}{Pc}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{}     print(transition)}
+    \PY{c+c1}{\PYZsh{}     print(\PYZdq{}Proba employed\PYZdq{}, transition[iz\PYZus{}plus])}
+    \PY{n}{il\PYZus{}plus} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{binomial}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{P}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{il\PYZus{}plus}
+
+\PY{c+c1}{\PYZsh{} @numba.njit}
+\PY{k}{def} \PY{n+nf}{simu\PYZus{}agg}\PY{p}{(}\PY{n}{tck}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{K0}\PY{p}{,} \PY{n}{izstart}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{T}\PY{o}{=}\PY{l+m+mi}{1100}\PY{p}{,} \PY{n}{T\PYZus{}drop}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{seed}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+      
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{n}{seed}\PY{p}{)}
+    \PY{n}{z\PYZus{}t}       \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{T}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+    \PY{n}{z\PYZus{}t}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}    \PY{o}{=} \PY{n}{izstart}
+\PY{c+c1}{\PYZsh{}     z\PYZus{}t       = np.zeros(T, dtype=int)}
+    \PY{n}{K\PYZus{}t}       \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{T}\PY{p}{)}
+    \PY{n}{K\PYZus{}t}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}    \PY{o}{=} \PY{n}{K0}
+    \PY{n}{kplus}     \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+    \PY{n}{l}         \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+    \PY{n}{draw} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{uniform}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{)}
+    \PY{n}{l} \PY{o}{=} \PY{p}{(}\PY{n}{draw} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.9}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{1}
+
+        
+    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{T}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+
+        \PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{update}\PY{p}{(}\PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{)}
+
+        \PY{k}{for} \PY{n}{ik}\PY{p}{,} \PY{n}{k\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+
+            \PY{n}{policy} \PY{o}{=} \PY{n}{tck}\PY{p}{[}\PY{n}{l}\PY{p}{[}\PY{n}{ik}\PY{p}{]}\PY{p}{]}\PY{p}{[}\PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{]}
+            \PY{n}{kplus}\PY{p}{[}\PY{n}{ik}\PY{p}{]}  \PY{o}{=} \PY{n}{policy}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{n}{ik}\PY{p}{]}\PY{p}{,} \PY{n}{K\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}             print(\PYZdq{}Status today\PYZdq{}, 1 \PYZhy{} l[ik])}
+            \PY{n}{l}\PY{p}{[}\PY{n}{ik}\PY{p}{]} \PY{o}{=} \PY{n}{update\PYZus{}idio}\PY{p}{(}\PY{n}{l}\PY{p}{[}\PY{n}{ik}\PY{p}{]}\PY{p}{,} \PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{,} \PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}             print(\PYZdq{}Status tomorrow\PYZdq{}, 1 \PYZhy{} l[ik])}
+\PY{c+c1}{\PYZsh{}         print(kplus)}
+        \PY{n}{K\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{n}{kplus}\PY{p}{)}
+        \PY{n}{k} \PY{o}{=} \PY{n}{kplus}
+\PY{c+c1}{\PYZsh{}         print(l)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Average employment status}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{l}\PY{p}{)}\PY{p}{)} 
+    \PY{c+c1}{\PYZsh{}trim data}
+    \PY{n}{K\PYZus{}t} \PY{o}{=} \PY{n}{K\PYZus{}t}\PY{p}{[}\PY{n}{T\PYZus{}drop}\PY{p}{:}\PY{p}{]}
+    \PY{n}{z\PYZus{}t} \PY{o}{=} \PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{T\PYZus{}drop}\PY{p}{:}\PY{p}{]}    
+    \PY{c+c1}{\PYZsh{} return averages}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Average State of the economy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{z\PYZus{}t}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          
+    \PY{k}{return} \PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{z\PYZus{}t}
+
+\PY{n}{distrib} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{z\PYZus{}t} \PY{o}{=} \PY{n}{simu\PYZus{}agg}\PY{p}{(}\PY{n}{tck}\PY{p}{,} \PY{n}{distrib}\PY{p}{,} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} update(0)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Average employment status 0.9
+Average State of the economy 0.446
+31.286312267992944
+    \end{Verbatim}
+
+    \hypertarget{update-aggregate-law-of-motion}{%
+\subsubsection{update aggregate law of
+motion}\label{update-aggregate-law-of-motion}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}
+\PY{k}{def} \PY{n+nf}{regression}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+    \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n}{c}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}  \PY{o}{=} \PY{n}{c}
+    \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{Y}       \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+    \PY{n}{beta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{,}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{,}\PY{n}{Y}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{)}
+    \PY{n}{slope} \PY{o}{=} \PY{n}{beta}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}     print(slope)}
+    \PY{n}{intercept} \PY{o}{=} \PY{n}{beta}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{k}{return} \PY{n}{slope}\PY{p}{,} \PY{n}{intercept}
+
+
+    
+\PY{c+c1}{\PYZsh{} @numba.njit}
+\PY{k}{def} \PY{n+nf}{param\PYZus{}update}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{z\PYZus{}t}\PY{p}{)}\PY{p}{:}
+    \PY{n}{Ksub} \PY{o}{=} \PY{n}{K\PYZus{}t}\PY{p}{[}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{n}{zsub} \PY{o}{=} \PY{n}{z\PYZus{}t}\PY{p}{[}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{n}{Kb} \PY{o}{=} \PY{n}{Ksub}\PY{p}{[}\PY{n}{zsub} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}
+    \PY{n}{Kg} \PY{o}{=} \PY{n}{Ksub}\PY{p}{[}\PY{n}{zsub} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}
+    
+    \PY{n}{Kbplus} \PY{o}{=} \PY{n}{K\PYZus{}t}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{zsub} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]}
+    \PY{n}{Kgplus} \PY{o}{=} \PY{n}{K\PYZus{}t}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{zsub} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]}
+    
+    \PY{n}{betab}\PY{p}{,} \PY{n}{alphab} \PY{o}{=} \PY{n}{regression}\PY{p}{(}\PY{n}{Kb}\PY{p}{,} \PY{n}{Kbplus}\PY{p}{)}
+    \PY{n}{betag}\PY{p}{,} \PY{n}{alphag} \PY{o}{=} \PY{n}{regression}\PY{p}{(}\PY{n}{Kg}\PY{p}{,} \PY{n}{Kgplus}\PY{p}{)}
+    
+    \PY{n}{alpha} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alphag}\PY{p}{,} \PY{n}{alphab}\PY{p}{]}\PY{p}{)}
+    \PY{n}{beta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{betag}\PY{p}{,} \PY{n}{betab}\PY{p}{]}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{alpha}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{beta}\PY{o}{.}\PY{n}{T}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{iterate-over-aggregate-law-of-motion}{%
+\subsection{Iterate over aggregate law of
+motion}\label{iterate-over-aggregate-law-of-motion}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{82}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{solve\PYZus{}ks}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{alpha\PYZus{}guess}     \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}  \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+    \PY{n}{beta\PYZus{}guess}      \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{l+m+mf}{0.97}\PY{p}{]}\PY{p}{)}
+    \PY{n}{distrib} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{10000}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{40} \PY{c+c1}{\PYZsh{} initial distribution of individual}
+    
+    \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Iteration number:\PYZdq{}, it)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Alpha}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{alpha\PYZus{}guess}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Beta}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{beta\PYZus{}guess}\PY{p}{)}
+        \PY{n}{tck} \PY{o}{=} \PY{n}{ss\PYZus{}policy\PYZus{}II}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{alpha\PYZus{}guess}\PY{p}{,} \PY{n}{beta\PYZus{}guess}\PY{p}{)}
+        \PY{k}{if} \PY{n}{tck} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Did not converge!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{break}
+        \PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{z\PYZus{}t} \PY{o}{=} \PY{n}{simu\PYZus{}agg}\PY{p}{(}\PY{n}{tck}\PY{p}{,} \PY{n}{distrib}\PY{p}{,} \PY{l+m+mi}{40}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Kss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{)}\PY{p}{)}
+        \PY{n}{alpha}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{n}{param\PYZus{}update}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{z\PYZus{}t}\PY{p}{)}
+
+        \PY{n}{err} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alpha\PYZus{}guess}\PY{p}{,} \PY{n}{beta\PYZus{}guess}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Parameter updating error}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{err}\PY{p}{)}
+        \PY{k}{if} \PY{n}{it} \PY{o}{\PYZpc{}} \PY{l+m+mi}{10} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and} \PY{n}{err}  \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.04}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{convergence in }\PY{l+s+si}{\PYZob{}}\PY{n}{it}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ iterations!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{k}{return} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{tck}\PY{p}{,} \PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{z\PYZus{}t}
+        
+        \PY{n}{alpha\PYZus{}guess} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{n}{alpha} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{n}{alpha\PYZus{}guess}
+        \PY{n}{beta\PYZus{}guess}  \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{n}{beta}  \PY{o}{+} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{n}{beta\PYZus{}guess}
+    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{83}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{tck}\PY{p}{,} \PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{z\PYZus{}t} \PY{o}{=} \PY{n}{solve\PYZus{}ks}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{K}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Alpha [0 0]
+Beta [0.9  0.97]
+convergence in 291 iterations!
+Average employment status 0.9611
+Average State of the economy 0.515
+Kss 15.015062158073837
+Parameter updating error 1.7295564213910153
+Alpha [[0.08928912 0.08065413]]
+Beta [[0.91735183 0.95490325]]
+convergence in 421 iterations!
+Average employment status 0.9606
+Average State of the economy 0.533
+Kss 19.637746467918404
+Parameter updating error 0.09670248125624968
+Alpha [[0.12175338 0.11273718]]
+Beta [[0.93315409 0.95269412]]
+convergence in 711 iterations!
+Average employment status 0.9564
+Average State of the economy 0.466
+Kss 26.23467455998264
+Parameter updating error 0.050429862905832366
+Alpha [[0.13866631 0.12848134]]
+Beta [[0.94317131 0.95392788]]
+convergence in 981 iterations!
+Average employment status 0.9017
+Average State of the economy 0.564
+Kss 28.1502698609781
+Parameter updating error 0.048671801049311667
+Alpha [[0.15715228 0.14407105]]
+Beta [[0.94558097 0.95263965]]
+convergence in 441 iterations!
+Average employment status 0.9574
+Average State of the economy 0.551
+Kss 11.159449853540435
+Parameter updating error 0.16944320265109666
+Alpha [[0.11056635 0.07794822]]
+Beta [[0.96009007 0.97324931]]
+convergence in 771 iterations!
+Average employment status 0.9602
+Average State of the economy 0.526
+Kss 13.529130577850694
+Parameter updating error 0.2349126811100047
+Alpha [[0.18085191 0.16115225]]
+Beta [[0.93242869 0.93907519]]
+convergence in 1091 iterations!
+Average employment status 0.9568
+Average State of the economy 0.508
+Kss 29.584956838843205
+Parameter updating error 0.0352228672362334
+Alpha [[0.17056188 0.15556159]]
+Beta [[0.94281616 0.94714507]]
+convergence in 431 iterations!
+Average employment status 0.9086
+Average State of the economy 0.549
+Kss 10.927762118220068
+Parameter updating error 0.21472886736188665
+Alpha [[0.10627338 0.07632327]]
+Beta [[0.96312115 0.97366121]]
+convergence in 621 iterations!
+Average employment status 0.894
+Average State of the economy 0.449
+Kss 12.795407818142872
+Parameter updating error 0.23241284860551042
+Alpha [[0.17757582 0.15631656]]
+Beta [[0.93337688 0.93995295]]
+convergence in 991 iterations!
+Average employment status 0.9612
+Average State of the economy 0.537
+Kss 30.72547205849078
+Parameter updating error 0.029429089737238293
+Alpha [[0.16967217 0.15497681]]
+Beta [[0.94329898 0.94728828]]
+convergence in 431 iterations!
+Average employment status 0.8938
+Average State of the economy 0.507
+Kss 10.859979125558748
+Parameter updating error 0.21670827673301626
+Alpha [[0.10518923 0.07474666]]
+Beta [[0.96364337 0.97434008]]
+convergence in 601 iterations!
+Average employment status 0.9598
+Average State of the economy 0.505
+Kss 12.709928679390234
+Parameter updating error 0.251310916694673
+Alpha [[0.18035557 0.16289099]]
+Beta [[0.93215    0.93721782]]
+convergence in 921 iterations!
+Average employment status 0.9616
+Average State of the economy 0.445
+Kss 31.564502910654447
+Parameter updating error 0.035593022091475454
+Alpha [[0.17053777 0.15824374]]
+Beta [[0.94305363 0.94615318]]
+convergence in 421 iterations!
+Average employment status 0.961
+Average State of the economy 0.473
+Kss 10.706037297451648
+Parameter updating error 0.24263487883222762
+Alpha [[0.09723699 0.06968907]]
+Beta [[0.96705215 0.97660081]]
+convergence in 521 iterations!
+Average employment status 0.9014
+Average State of the economy 0.429
+Kss 12.284901000424183
+Parameter updating error 0.26581472156127606
+Alpha [[0.17473478 0.16418385]]
+Beta [[0.93391975 0.93620973]]
+convergence in 871 iterations!
+Average employment status 0.8983
+Average State of the economy 0.489
+Kss 32.303345645971625
+Parameter updating error 0.03614196639043748
+Alpha [[0.16726804 0.15645595]]
+Beta [[0.94419198 0.94648441]]
+convergence in 431 iterations!
+Average employment status 0.9626
+Average State of the economy 0.436
+Kss 10.88177403396956
+Parameter updating error 0.21572358168721797
+Alpha [[0.10344995 0.07635154]]
+Beta [[0.96441337 0.97360997]]
+convergence in 601 iterations!
+Average employment status 0.9567
+Average State of the economy 0.454
+Kss 12.689252795532685
+Parameter updating error 0.2494955578554966
+Alpha [[0.18031371 0.16190827]]
+Beta [[0.93222321 0.93758482]]
+convergence in 931 iterations!
+Average employment status 0.9021
+Average State of the economy 0.46
+Kss 31.450784039941922
+Parameter updating error 0.03725661691791479
+Alpha [[0.16992572 0.15614198]]
+Beta [[0.94323792 0.94677882]]
+convergence in 431 iterations!
+Average employment status 0.8946
+Average State of the economy 0.502
+Kss 10.822680031818306
+Parameter updating error 0.225764371850806
+Alpha [[0.10129856 0.07388356]]
+Beta [[0.96528773 0.97470835]]
+convergence in 571 iterations!
+Average employment status 0.9032
+Average State of the economy 0.416
+Kss 12.545819999006447
+Parameter updating error 0.2475239622215274
+Alpha [[0.17552778 0.16038329]]
+Beta [[0.93394541 0.93806811]]
+convergence in 931 iterations!
+Average employment status 0.8992
+Average State of the economy 0.424
+Kss 31.21632498389061
+Parameter updating error 0.03242989531533683
+convergence in 21 iterations!
+    \end{Verbatim}
+
+    \hypertarget{plot-capital-accumulation-paths-conditional-on-alpha-and-beta}{%
+\subsubsection{\texorpdfstring{Plot capital accumulation paths
+conditional on \(\alpha\) and
+\(\beta\)}{Plot capital accumulation paths conditional on \textbackslash{}alpha and \textbackslash{}beta}}\label{plot-capital-accumulation-paths-conditional-on-alpha-and-beta}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{84}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{simu\PYZus{}approx}\PY{p}{(}\PY{n}{K0}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{z\PYZus{}t}\PY{p}{)}\PY{p}{:}
+    \PY{n}{simuK} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{z\PYZus{}t}\PY{p}{)}\PY{p}{)}
+    \PY{n}{simuK}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{K0}
+    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{z\PYZus{}t}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+
+        \PY{n}{simuK}\PY{p}{[}\PY{n}{t}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{alpha}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{]} \PY{o}{+} \PY{n}{beta}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{z\PYZus{}t}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{]}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{simuK}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{simuK}
+
+\PY{n}{simuK} \PY{o}{=} \PY{n}{simu\PYZus{}approx}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{z\PYZus{}t}\PY{p}{)}
+
+                       
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{85}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Capital accumulation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Business cycles}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{K\PYZus{}t}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Actual path}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{simuK}\PY{p}{,} \PY{n}{label}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approximate path}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{z\PYZus{}t}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Periods}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Aggregate stock of capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Periods}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Aggregate productivity shocks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{alpha}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[0.15979124, 0.15106021]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{87}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{beta}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{87}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[0.95409771, 0.95570399]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{88}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{slope}\PY{p}{,} \PY{n}{intercept}\PY{p}{,} \PY{n}{r\PYZus{}value}\PY{p}{,} \PY{n}{p\PYZus{}value}\PY{p}{,} \PY{n}{std\PYZus{}err} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{linregress}\PY{p}{(}\PY{n}{simuK}\PY{p}{,}\PY{n}{K\PYZus{}t}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{89}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{r\PYZus{}value}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{89}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.9993449202849176
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The aggregate capital accumulation path conditional on individual policy
+functions is consistent with the approximate aggregate law of motion for
+capital. The approximate law of motion is therefore a good approximation
+to the aggregate capital accumulation path in this economy.
+
+    \hypertarget{robustness-checks}{%
+\subsubsection{Robustness checks}\label{robustness-checks}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{97}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{K0} \PY{o}{=} \PY{l+m+mi}{31}
+\PY{n}{K\PYZus{}rob}\PY{p}{,} \PY{n}{z\PYZus{}rob} \PY{o}{=} \PY{n}{simu\PYZus{}agg}\PY{p}{(}\PY{n}{tck}\PY{p}{,} \PY{n}{distrib}\PY{p}{,} \PY{n}{K0}\PY{p}{,} \PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Average employment status 1.0
+Average State of the economy 0.493
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{98}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{simuK\PYZus{}rob} \PY{o}{=} \PY{n}{simu\PYZus{}approx}\PY{p}{(}\PY{n}{K\PYZus{}rob}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{z\PYZus{}rob}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{99}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Capital accumulation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Business cycles}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{K\PYZus{}rob}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Actual path}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{simuK\PYZus{}rob}\PY{p}{,} \PY{n}{label}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approximate path}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{z\PYZus{}t}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Periods}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Aggregate stock of capital}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Periods}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Aggregate productivity shocks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_35_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{100}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{slope}\PY{p}{,} \PY{n}{intercept}\PY{p}{,} \PY{n}{r\PYZus{}value}\PY{p}{,} \PY{n}{p\PYZus{}value}\PY{p}{,} \PY{n}{std\PYZus{}err} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{linregress}\PY{p}{(}\PY{n}{simuK\PYZus{}rob}\PY{p}{,}\PY{n}{K\PYZus{}rob}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{r\PYZus{}value}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.8429272044168576
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Even with a different series of idiosyncratic and aggregate shocks, the
+approximate law of motion performs relatively well. This suggests that
+the approximate law of motion is a good approximation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
