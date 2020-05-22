@@ -1,0 +1,1189 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Problem Set 4 - 411-3}
+    \author{José Diego Salas and Thomas Pellet}
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{optimize} \PY{k+kn}{import} \PY{n}{linprog}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numba}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{education-subsidies-with-private-information}{%
+\section{Education Subsidies with Private
+Information}\label{education-subsidies-with-private-information}}
+
+    \hypertarget{the-rich-agent-problem}{%
+\subsection{The rich agent problem}\label{the-rich-agent-problem}}
+
+    \[
+\max_{\pi} -\frac{\pi}{R} + 3 \ln(1 + \pi) + (1+\epsilon) (1 - \ln(1+\pi))
+\]
+
+Taking first order conditions we get:
+
+\[
+1 + \pi^*_r = (2-\epsilon) R
+\]
+
+    \hypertarget{the-poor-agent-problem}{%
+\subsection{The poor agent problem}\label{the-poor-agent-problem}}
+
+    \[
+\max_{\pi} -\pi + 3 \ln(1 + \pi) + (1 -\epsilon) (1 - log(1+\pi))
+\]
+
+Taking first order conditions we get:
+
+\[
+1 + \pi^*_p = (2 + \epsilon) = \frac{2 + \epsilon}{2 - \epsilon} (2 - \epsilon) < R (2 - \epsilon) = 1 + \pi^*_r
+\]
+
+Therefore we have that rich agents invest more in education than poor
+agents in this model.
+
+    \hypertarget{introducing-an-education-subsidy}{%
+\subsection{Introducing an education
+subsidy}\label{introducing-an-education-subsidy}}
+
+    If types are observable, only the problem of the poor agent will change
+with the introduction of the education subsidy. The poor agent problem
+becomes: \[
+\max_{\pi} -\frac{\pi}{1+T} + (3 - T) \ln(1 + \pi) + (1 -\epsilon) (1 - \ln(1+\pi))
+\]
+
+Taking first order conditions we get:
+
+\[
+1 + \pi^*_p(T) = (2 - T + \epsilon) (1 + T) = (2 + \epsilon) + (1 + \epsilon) T - T^2
+\]
+
+In this setup, effort is a concave function of the subsidy. Effort
+increases up to \$ T\^{}* = \frac{1+\epsilon}{2}\$ where it reaches a
+maximum and starts decresing. Therefore maximum effort \$ 1 +
+\pi\^{}*\_p(T\^{}*) = 2 + \epsilon + \frac{(1 + \epsilon)^2}{4}\$.
+
+For a planner minimizing the square difference
+\((\pi^*_r - \pi^*_p(T))^2\), if \(\pi^*_r > \pi^*_p(T^*)\) it is
+optimal for the planner to set \(T = T^*\)
+
+    \hypertarget{adding-private-information}{%
+\subsection{Adding private
+information}\label{adding-private-information}}
+
+    Now the planner does not observe the type of each agent. An education
+subsidy scheme has to provide incentives for the rich agent not to
+participate in the educational subsidy. The planner problem under
+private information becomes: \[\min_{T} (\pi^*_r - \pi^*_p(T))^2\]
+
+subject to:
+
+\[ -\frac{\pi_p(T)}{1+T} + (3 - T) \ln(1 + \pi_p(T)) + (1 -\epsilon) (1 - \ln(1+\pi_p(T))) \geq -\pi_p(0) + 3 \ln(1 + \pi_p(0)) + (1 -\epsilon) (1 - \ln(1+\pi_p(0)))\]
+
+\[ -\frac{\pi_r(T)}{R+T} + (3 - T) \ln(1 + \pi_r(T)) + (1 +\epsilon) (1 - \ln(1+\pi_r(T))) \leq -\frac{\pi_r(0)}{R} + 3 \ln(1 + \pi_r(0)) + (1 +\epsilon) (1 - \ln(1+\pi_r(0)))\]
+
+where we already now \(\pi_p(0), \pi_p(T), \pi_r(0)\)
+
+    The rich problem conditional on participating to the education program
+is: \[
+\max_{\pi} -\frac{\pi}{1+T} + (3 - T) \ln(1 + \pi) + (1 +\epsilon) (1 - \ln(1+\pi))
+\]
+
+Taking first order conditions we get:
+
+\[
+1 + \pi^*_r(T) = (R + T) (2 - T - \epsilon) = (2 - \epsilon)R + (2 - R -\epsilon) T - T^2
+\]
+
+    We can rewrite the planner problem as:
+\[\min_{T} (\pi^*_r - \pi^*_p(T))^2\]
+
+subject to:
+
+\[ -\frac{(2 + \epsilon) + (1 + \epsilon) T - T^2 - 1}{1+T} + (3 - T) \ln((2 + \epsilon) + (1 + \epsilon) T - T^2) + (1 -\epsilon) (1 - \ln((2 + \epsilon) + (1 + \epsilon) T - T^2)) \geq -(1 + \epsilon) + 3 \ln(2 + \epsilon) + (1 -\epsilon) (1 - \ln(2 + \epsilon))\]
+
+\[ -\frac{(2 - \epsilon)R + (2 - R -\epsilon) T - T^2 - 1 }{R+T} + (3 - T) \ln((2 - \epsilon)R + (2 - R -\epsilon) T - T^2) + (1 +\epsilon) (1 - \ln((2 - \epsilon)R + (2 - R -\epsilon) T - T^2) \leq -\frac{(2-\epsilon) R - 1}{R} + 3 \ln((2-\epsilon) R) + (1 +\epsilon) (1 - \ln((2-\epsilon) R))\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{183}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ϵ} \PY{o}{=} \PY{l+m+mf}{0.18}
+\PY{n}{R} \PY{o}{=} \PY{l+m+mf}{1.5}
+\PY{n}{T} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{200}\PY{p}{)}
+
+\PY{n}{p\PYZus{}r} \PY{o}{=} \PY{k}{lambda} \PY{n}{T}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{n}{ϵ}\PY{p}{)}\PY{o}{*}\PY{n}{R} \PY{o}{+} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{\PYZhy{}} \PY{n}{ϵ} \PY{o}{\PYZhy{}} \PY{n}{R}\PY{p}{)}\PY{o}{*}\PY{n}{T} \PY{o}{\PYZhy{}} \PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+\PY{n}{p\PYZus{}p} \PY{o}{=} \PY{k}{lambda} \PY{n}{T}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{ϵ}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{ϵ}\PY{p}{)}\PY{o}{*}\PY{n}{T} \PY{o}{\PYZhy{}} \PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+
+\PY{n}{LHS\PYZus{}r} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{\PYZhy{}} \PY{n}{ϵ}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{n}{ϵ}\PY{p}{)}\PY{o}{*}\PY{n}{R}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{n}{ϵ}\PY{p}{)}\PY{p}{)}
+\PY{n}{RHS\PYZus{}p} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{+} \PY{n}{ϵ}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{ϵ}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{ϵ}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{TT\PYZus{}r}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{:}
+    \PY{n}{RHS} \PY{o}{=}  \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{p\PYZus{}r}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{T}\PY{o}{+}\PY{n}{R}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{p\PYZus{}r}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{\PYZhy{}} \PY{n}{ϵ} \PY{o}{\PYZhy{}} \PY{n}{T}\PY{p}{)}
+    \PY{k}{return} \PY{n}{RHS}
+
+
+\PY{k}{def} \PY{n+nf}{TT\PYZus{}p}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{:}
+    \PY{n}{LHS} \PY{o}{=}  \PY{o}{\PYZhy{}} \PY{n}{p\PYZus{}p}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{T}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{p\PYZus{}p}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{+} \PY{n}{ϵ} \PY{o}{\PYZhy{}} \PY{n}{T}\PY{p}{)}
+    \PY{k}{return} \PY{n}{LHS}
+
+
+
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rich agent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Poor agent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{TT\PYZus{}r}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{LHS\PYZus{}r}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{TT\PYZus{}p}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{RHS\PYZus{}p}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{T}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Truth telling constraint}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<ipython-input-183-ab2fbe9fa436>:12: RuntimeWarning: invalid value encountered
+in log
+  RHS =  - (p\_r(T))/(T+R) + np.log(p\_r(T)) * (2 - ϵ - T)
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{176}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{p\PYZus{}p}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Optimal effort of the poor agent}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{T}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{effort}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{176}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'effort')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{insuring-preference-shocks}{%
+\section{Insuring Preference Shocks}\label{insuring-preference-shocks}}
+
+    The problem can be formulated as: \[
+P(w) = \max_{c_1, c_2, w_1, w_2} \frac{1}{2} (- c_1 + \tilde{\beta} P(w_1) - c_2 + \tilde{\beta} P(w_2)
+\]
+
+subject to: \[
+\theta_1 \ln(c_1) + \beta_1 w_1 \geq \theta_1 \ln(c_2) + \beta_1 w_2
+\]
+
+\[
+\theta_2 \ln(c_2) + \beta_2 w_2 \geq \theta_2 \ln(c_1) + \beta_2 w_1
+\]
+
+\[
+\frac{1}{2} ( \theta_1 \ln(c_1) + \beta_1 w_1 + \theta_2 \ln(c_2) + \beta_2 w_2)  \geq w
+\]
+
+Observe that the first two constraints that we can't have \(c_1 > c_2\)
+and \(w_1 > w_2\) or \(c_1 < c_2\) and \(w_1 < w_2\) simultaneously or
+one agent would have an incentive to lie.
+
+Now adding the two budget constraints we get:
+
+\[
+(\theta_1 - \theta_2) (\ln(c_1) - \ln(c_2)) \geq (\beta_1 - \beta_2) (w_2 - w_1)
+\]
+
+If \(w_2 < w_1\) and \(c_1 < c_2\) the left hand side is negative while
+the right hand side is positive, contradicting the inequality. Therefore
+we have \(w_1 < w_2\) and \(c_2 < c_1\)
+
+    Taking first order conditions we have: \[
+-\frac{1}{2} + \mu_1 \frac{\theta_1}{c_1} - \mu_2 \frac{\theta_2}{c_1} + \frac{\lambda}{2} \frac{\theta_1}{c_1} = 0
+\]
+
+\[
+-\frac{1}{2} + \mu_2 \frac{\theta_2}{c_2} - \mu_1 \frac{\theta_1}{c_2} + \frac{\lambda}{2} \frac{\theta_2}{c_2} = 0
+\]
+
+\[
+\frac{1}{2} \tilde{\beta}P^{'}(w_1) + \mu_1 \beta_1 - \mu_2 \beta_2 + \beta_1 \frac{\lambda}{2}  = 0
+\]
+
+\[
+\frac{1}{2} \tilde{\beta}P^{'}(w_2) + \mu_2 \beta_2 - \mu_1 \beta_1 + \beta_2 \frac{\lambda}{2}  = 0
+\]
+
+and the envelope condition \(P^{'}(w) = -\lambda\).
+
+Summing the last two equations we get:
+
+\[
+\frac{1}{2} \tilde{\beta}(P^{'}(w_1) + P^{'}(w_2)) + (\beta_1 + \beta_2) \frac{\lambda}{2}  = 0
+\]
+
+so that: \[
+P^{'}(w) = \mathbb{E}\left[P^{'}(w^{'})\right]
+\]
+
+and therefore \(P^{'}\) is a martingale and converges over time. To show
+that we have immiseration, we are going to show that utility promises
+spread out.
+
+    Suppose it is not spread out so that \(w_1 = w_2 = w\). By the truth
+telling constraints we obtain that \(c_1 = c_2\) as well. Now looking at
+the other two optimization constraints and using that \(c_1 = c_2\) we
+get:
+
+\[
+\mu_1 \theta_1 - \mu_2 \theta_2 + \frac{\lambda}{2} \theta_1 = \mu_2 \theta_2 - \mu_1 \theta_1 + \frac{\lambda}{2} \theta_2
+\]
+
+implying that \[
+\theta_1 = \theta_2
+\] which is a contradiction.
+
+Hence we have \(w_1 \leq w \leq w_2\). Using the result from class we
+have that \$ \lim\emph{\{t \to \infty\} P\^{}\{'\}(w) = 0\$ and \$
+\lim}\{t \to \infty\} w = -\infty\$ as expected.
+
+    \hypertarget{computing-private-information-problems}{%
+\section{Computing Private Information
+Problems}\label{computing-private-information-problems}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{249}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{makegrid}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{:}
+    \PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.4}\PY{p}{]}\PY{p}{)}
+
+    \PY{n}{q} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+
+    \PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{.}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{N}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{a}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{c}
+
+\PY{n}{a}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{c} \PY{o}{=} \PY{n}{makegrid}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}
+
+\PY{n}{Π} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mf}{0.8}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.8}\PY{p}{]}\PY{p}{]}\PY{p}{)}   \PY{c+c1}{\PYZsh{} First row for a = 0.2, first column for q = 1}
+
+\PY{n+nd}{@numba}\PY{o}{.}\PY{n}{njit}\PY{p}{(}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{utility}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{write-down-constraints}{%
+\subsection{Write down constraints}\label{write-down-constraints}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{253}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{w0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{np}\PY{o}{.}\PY{n}{set\PYZus{}printoptions}\PY{p}{(}\PY{n}{suppress}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{factor} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{q}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{c}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(factor.shape)}
+\PY{n}{factor} \PY{o}{=} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{factor}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} print(factor)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{254}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}set up equality constraint (2)}
+\PY{k}{def} \PY{n+nf}{bayes\PYZus{}constraint}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{q}\PY{p}{,}\PY{n}{c}\PY{p}{)}\PY{p}{:}
+    \PY{n}{constraint} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{)}\PY{p}{)}    \PY{c+c1}{\PYZsh{} 2*2 constraints here, multiplying a vector of size 2*2*20}
+    \PY{n}{index} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{ia}\PY{p}{,} \PY{n}{a\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{iq}\PY{p}{,} \PY{n}{q\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{:}
+            \PY{n}{p}  \PY{o}{=} \PY{n}{Π}\PY{p}{[}\PY{n}{ia}\PY{p}{,} \PY{n}{iq}\PY{p}{]}                                \PY{c+c1}{\PYZsh{} The conditional probability}
+            \PY{n}{qc} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{p}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}\PY{p}{)}       \PY{c+c1}{\PYZsh{} Right hand side factor of the equality}
+\PY{c+c1}{\PYZsh{}             print(qc)}
+            \PY{n}{RHS} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{qc}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{n}{ia}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{1}\PY{p}{,} \PY{p}{(}\PY{n}{ia}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}   \PY{c+c1}{\PYZsh{} Keep non\PYZhy{}zero coefficients for abar only}
+            \PY{n}{LHS} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{iq}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{(}\PY{n}{iq}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{n}{ia}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{1}\PY{p}{,} \PY{p}{(}\PY{n}{ia}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+            \PY{n}{constraint}\PY{p}{[}\PY{n}{index}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{LHS} \PY{o}{\PYZhy{}} \PY{n}{RHS}
+            \PY{n}{index} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+    
+    \PY{n}{A\PYZus{}eq\PYZus{}2} \PY{o}{=} \PY{n}{constraint}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{p}{:}\PY{p}{]}
+    \PY{k}{return} \PY{n}{A\PYZus{}eq\PYZus{}2}
+
+\PY{c+c1}{\PYZsh{} test2 = bayes\PYZus{}constraint(a,q,c)}
+\PY{c+c1}{\PYZsh{} print(test2)}
+\PY{c+c1}{\PYZsh{} print(test2 @ np.ones(80))}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{255}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}set up inequality constraint (1)}
+\PY{k}{def} \PY{n+nf}{promise\PYZus{}keeping}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+    \PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}
+    \PY{n}{index} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{ic}\PY{p}{,} \PY{n}{c\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{ia}\PY{p}{,} \PY{n}{a\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+            \PY{n}{U}\PY{p}{[}\PY{n}{index}\PY{p}{]} \PY{o}{=} \PY{n}{utility}\PY{p}{(}\PY{n}{c\PYZus{}cur}\PY{p}{,} \PY{n}{a\PYZus{}cur}\PY{p}{)}
+            \PY{n}{index} \PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
+    \PY{n}{U} \PY{o}{=} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{U}\PY{p}{)}
+    \PY{k}{return} \PY{n}{U}
+
+\PY{n}{U} \PY{o}{=} \PY{n}{promise\PYZus{}keeping}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{a}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(U.shape)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{256}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}set up inequality constraint (2)}
+\PY{k}{def} \PY{n+nf}{incentive}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+    \PY{n}{EU} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}
+    \PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}
+    \PY{n}{index} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{c+c1}{\PYZsh{}compute expected utility}
+    \PY{k}{for} \PY{n}{iq}\PY{p}{,} \PY{n}{q\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{ic}\PY{p}{,} \PY{n}{c\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{:}
+            \PY{k}{for} \PY{n}{ia}\PY{p}{,} \PY{n}{a\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+                \PY{n}{EU}\PY{p}{[}\PY{n}{index}\PY{p}{]} \PY{o}{=} \PY{n}{utility}\PY{p}{(}\PY{n}{c\PYZus{}cur}\PY{p}{,} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{ia}\PY{p}{]}\PY{p}{)}\PY{o}{*} \PY{p}{(}\PY{n}{Π}\PY{p}{[}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{ia}\PY{p}{,}\PY{n}{iq}\PY{p}{]} \PY{o}{/} \PY{n}{Π}\PY{p}{[}\PY{n}{ia}\PY{p}{,}\PY{n}{iq}\PY{p}{]}\PY{p}{)}
+                \PY{n}{index} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                
+    \PY{n}{indexU} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{iq}\PY{p}{,} \PY{n}{q\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{ic}\PY{p}{,} \PY{n}{c\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{:}
+            \PY{k}{for} \PY{n}{ia}\PY{p}{,} \PY{n}{a\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+                \PY{n}{U}\PY{p}{[}\PY{n}{indexU}\PY{p}{]} \PY{o}{=} \PY{n}{utility}\PY{p}{(}\PY{n}{c\PYZus{}cur}\PY{p}{,} \PY{n}{a\PYZus{}cur}\PY{p}{)}
+                \PY{n}{indexU} \PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
+                
+    \PY{n}{matfactor} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(matfactor)}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}EU\PYZdq{},np.multiply(matfactor,EU[np.newaxis, :]))}
+\PY{c+c1}{\PYZsh{}     print(\PYZdq{}U\PYZdq{},np.multiply(matfactor,U[np.newaxis, :]))}
+    \PY{n}{constraint} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{n}{matfactor}\PY{p}{,}\PY{n}{EU}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{n}{matfactor}\PY{p}{,}\PY{n}{U}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{constraint}
+
+
+\PY{c+c1}{\PYZsh{} test1 = incentive(c,a)}
+\PY{c+c1}{\PYZsh{} print(test1 @ np.ones(80))}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{270}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{set\PYZus{}constraints}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Maximization over sum Pi q \PYZhy{} c = minimization over sum Pi c \PYZhy{} q}
+    \PY{n}{factor} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{q}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{c}\PY{p}{)}
+    \PY{n}{factor} \PY{o}{=} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{factor}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} equality constraint 1: Probability distribution constraint, sum over all possible states}
+    \PY{n}{A\PYZus{}eq\PYZus{}1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{factor}\PY{p}{)}\PY{p}{)}
+
+
+    \PY{c+c1}{\PYZsh{}equality constraint 2: Bayes Rule}
+    \PY{n}{A\PYZus{}eq\PYZus{}2} \PY{o}{=} \PY{n}{bayes\PYZus{}constraint}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{q}\PY{p}{,}\PY{n}{c}\PY{p}{)}
+
+    \PY{n}{beq} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    
+    
+    \PY{c+c1}{\PYZsh{}inequality constraint 1: Promise keeping constraint}
+    \PY{n}{A\PYZus{}ub\PYZus{}1} \PY{o}{=} \PY{n}{promise\PYZus{}keeping}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{a}\PY{p}{)}   \PY{c+c1}{\PYZsh{} Loop over a first, then c, then duplicate for each q}
+    
+    \PY{k}{if} \PY{n}{info} \PY{o}{==} \PY{k+kc}{False}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{}inequality constraint 2: promise keeping constraint}
+        \PY{n}{A\PYZus{}ub\PYZus{}2} \PY{o}{=} \PY{n}{incentive}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{a}\PY{p}{)}
+
+
+    \PY{k}{if} \PY{n}{info} \PY{o}{==} \PY{k+kc}{True}\PY{p}{:}
+        \PY{n}{A\PYZus{}ub\PYZus{}2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{factor}\PY{p}{)}\PY{p}{)}\PY{p}{)}    \PY{c+c1}{\PYZsh{} No incentive compatibility constraint under full info}
+    
+    
+    \PY{n}{bub} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}} \PY{n}{w0}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    
+    \PY{n}{Aeq} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{A\PYZus{}eq\PYZus{}1}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{A\PYZus{}eq\PYZus{}2}\PY{p}{)}\PY{p}{)}
+    \PY{n}{Aub} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{A\PYZus{}ub\PYZus{}1}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{A\PYZus{}ub\PYZus{}2}\PY{p}{)}\PY{p}{)}
+                   
+    \PY{k}{return} \PY{n}{factor}\PY{p}{,} \PY{n}{Aub}\PY{p}{,} \PY{n}{bub}\PY{p}{,} \PY{n}{Aeq}\PY{p}{,} \PY{n}{beq}
+
+
+\PY{n}{factor}\PY{p}{,} \PY{n}{Aub}\PY{p}{,} \PY{n}{bub}\PY{p}{,} \PY{n}{Aeq}\PY{p}{,} \PY{n}{beq} \PY{o}{=} \PY{n}{set\PYZus{}constraints}\PY{p}{(}\PY{n}{w0}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{q}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Aeq}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{beq}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Aub}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{bub}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{bub}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(3, 80)
+(3,)
+(3, 80)
+(3,)
+[-0.  0.  0.]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{271}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{linear\PYZus{}solve}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{n}{a}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{c} \PY{o}{=} \PY{n}{makegrid}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{)}
+    \PY{n}{sol} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{80}\PY{p}{)}\PY{p}{)}
+    \PY{n}{res} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{iw}\PY{p}{,} \PY{n}{w\PYZus{}cur} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{:}
+        \PY{n}{factor}\PY{p}{,} \PY{n}{Aub}\PY{p}{,} \PY{n}{bub}\PY{p}{,} \PY{n}{Aeq}\PY{p}{,} \PY{n}{beq} \PY{o}{=} \PY{n}{set\PYZus{}constraints}\PY{p}{(}\PY{n}{w\PYZus{}cur}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{info}\PY{p}{)}
+        \PY{n}{res}\PY{p}{[}\PY{n}{iw}\PY{p}{]} \PY{o}{=} \PY{n}{linprog}\PY{p}{(}\PY{n}{c}\PY{o}{=}\PY{n}{factor}\PY{p}{,} \PY{n}{A\PYZus{}ub}\PY{o}{=}\PY{n}{Aub}\PY{p}{,} \PY{n}{b\PYZus{}ub}\PY{o}{=}\PY{n}{bub}\PY{p}{,} \PY{n}{A\PYZus{}eq} \PY{o}{=} \PY{n}{Aeq}\PY{p}{,} \PY{n}{b\PYZus{}eq}\PY{o}{=}\PY{n}{beq}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{revised simplex}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{sol}\PY{p}{[}\PY{n}{iw}\PY{p}{,}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{res}\PY{p}{[}\PY{n}{iw}\PY{p}{]}\PY{o}{.}\PY{n}{x}   \PY{c+c1}{\PYZsh{}w,q,c,q}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Equality constraint\PYZdq{},res.con)}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Inequality constraint\PYZdq{}, res.slack)}
+\PY{c+c1}{\PYZsh{}         print(\PYZdq{}Success?\PYZdq{}, res.success)}
+    \PY{k}{return} \PY{n}{sol}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,} \PY{n}{res}   \PY{c+c1}{\PYZsh{}w,q,c,q}
+    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{272}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{w0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{1.1}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}
+
+\PY{n}{π}\PY{p}{,} \PY{n}{result}  \PY{o}{=} \PY{n}{linear\PYZus{}solve}\PY{p}{(}\PY{n}{w0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{268}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{slacks} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{iw} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{slacks}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{iw}\PY{p}{]} \PY{o}{=} \PY{n}{result}\PY{p}{[}\PY{n}{iw}\PY{p}{]}\PY{o}{.}\PY{n}{slack}
+
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{slacks}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private information \PYZhy{} Slackness}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Outside option (\PYZdl{}w\PYZus{}0\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Slackness}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{labels}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Promise keeping}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Incentive Comp. Low a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Incentive Comp. High a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The promise keeping constraint is not binding for low values of \(w_0\).
+The incentive compatibility constraint for high effort is always binding
+since high effort lowers utility everything else equal. The incentive
+compatibility constraint for low effort types is binding only when the
+outside option is poor. This suggests that in the low effort state with
+poor outside option, the agent would be willing to put more effort.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{323}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{π\PYZus{}} \PY{o}{=} \PY{n}{π}\PY{o}{*}\PY{p}{(}\PY{n}{π} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.00001}\PY{p}{)}   \PY{c+c1}{\PYZsh{} Disregard grid error}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{nonzero}\PY{p}{[}\PY{l+m+mi}{19}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}            \PY{c+c1}{\PYZsh{}Example of randomization for a = 0.2 and q = 2}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0.         0.         0.         0.         0.         0.
+ 0.         0.         0.         0.         0.         0.
+ 0.         0.         0.         0.         0.         0.09261416
+ 0.10738584 0.        ]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{324}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{randomized} \PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{π\PYZus{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{randomized}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 2]
+  [0 2]]
+
+ [[0 2]
+  [0 2]]
+
+ [[0 2]
+  [0 2]]
+
+ [[0 2]
+  [0 2]]
+
+ [[1 2]
+  [1 1]]
+
+ [[1 2]
+  [1 1]]
+
+ [[1 2]
+  [1 1]]
+
+ [[1 2]
+  [1 1]]
+
+ [[1 2]
+  [1 1]]
+
+ [[1 2]
+  [1 1]]
+
+ [[1 2]
+  [1 1]]
+
+ [[2 0]
+  [1 0]]
+
+ [[2 0]
+  [1 0]]
+
+ [[1 0]
+  [2 0]]
+
+ [[1 0]
+  [2 0]]]
+    \end{Verbatim}
+
+    It appears that consumption is randomized in some states, but not all.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{248}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{vecpi} \PY{o}{=} \PY{n}{π}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{)}
+\PY{n}{veca} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,} \PY{n}{a}\PY{p}{)}
+
+\PY{n}{effs} \PY{o}{=} \PY{n}{vecpi} \PY{o}{@} \PY{n}{veca}
+
+\PY{n}{hlinelow} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{w0}\PY{p}{)}
+\PY{n}{hlinehigh} \PY{o}{=} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{w0}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{effs}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{hlinelow}\PY{p}{,} \PY{n}{hlinehigh}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private Information \PYZhy{} Average effort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Outside option (\PYZdl{}w\PYZus{}0\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Effort (\PYZdl{}a\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_33_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{full-information-case}{%
+\subsection{Full information case}\label{full-information-case}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{273}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{π\PYZus{}full}\PY{p}{,} \PY{n}{result\PYZus{}full}  \PY{o}{=} \PY{n}{linear\PYZus{}solve}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{info}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{276}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{slack\PYZus{}full} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{iw} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{w0}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{slack\PYZus{}full}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{iw}\PY{p}{]} \PY{o}{=} \PY{n}{result}\PY{p}{[}\PY{n}{iw}\PY{p}{]}\PY{o}{.}\PY{n}{slack}
+
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{slack\PYZus{}full}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Promise keeping}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Full information \PYZhy{} Promise keeping condition}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Outside option (\PYZdl{}w\PYZus{}0\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Slackness}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} ax.legend(labels=\PYZsq{}Promise keeping\PYZsq{})}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    As the outside option becomes more attractive, the participation
+constraint becomes binding for the full information planner as well. It
+starts binding at the same stage as before.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{311}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{πzero} \PY{o}{=} \PY{n}{π\PYZus{}full}\PY{o}{*}\PY{p}{(}\PY{n}{π\PYZus{}full} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.00001}\PY{p}{)}   \PY{c+c1}{\PYZsh{} Disregard grid error}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{nonzero}\PY{p}{[}\PY{l+m+mi}{19}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}            \PY{c+c1}{\PYZsh{}Example of randomization for a = 0.2 and q = 2}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0.         0.         0.         0.         0.         0.
+ 0.         0.         0.         0.         0.         0.
+ 0.         0.         0.         0.         0.         0.09261416
+ 0.10738584 0.        ]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{312}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{test} \PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{πzero}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{test}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[[0 1]
+  [0 1]]
+
+ [[0 1]
+  [0 1]]
+
+ [[0 1]
+  [0 1]]
+
+ [[0 1]
+  [0 1]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[0 1]
+  [0 2]]
+
+ [[1 1]
+  [1 1]]
+
+ [[1 1]
+  [1 1]]
+
+ [[1 1]
+  [1 1]]
+
+ [[1 1]
+  [1 1]]
+
+ [[1 1]
+  [1 1]]
+
+ [[1 1]
+  [1 1]]
+
+ [[1 1]
+  [1 1]]
+
+ [[1 0]
+  [2 0]]
+
+ [[1 0]
+  [2 0]]
+
+ [[1 0]
+  [2 0]]]
+    \end{Verbatim}
+
+    We can see that consumption is randomized in a few cases where the
+vector of probabilities given a, q and w0 is non-zero for more than one
+cell.
+
+    \hypertarget{comparing-full-information-and-private-information}{%
+\subsection{Comparing full information and private
+information}\label{comparing-full-information-and-private-information}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{314}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{vecpi\PYZus{}full} \PY{o}{=} \PY{n}{π\PYZus{}full}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{)}
+\PY{n}{veca\PYZus{}full} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,} \PY{n}{a}\PY{p}{)}
+
+\PY{n}{effs\PYZus{}full} \PY{o}{=} \PY{n}{vecpi\PYZus{}full} \PY{o}{@} \PY{n}{veca\PYZus{}full}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{318}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{effs}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Private}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{effs\PYZus{}full}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Full}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{hlinelow}\PY{p}{,} \PY{n}{hlinehigh}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private Information \PYZhy{} Average effort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Outside option (\PYZdl{}w\PYZus{}0\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Effort (\PYZdl{}a\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{best}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_43_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Average effort is weakly superior given outside option in the full
+information setting.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{320}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{vecc} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{kron}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{c}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{cons\PYZus{}full} \PY{o}{=} \PY{n}{vecpi\PYZus{}full} \PY{o}{@} \PY{n}{vecc}
+
+\PY{n}{cons} \PY{o}{=} \PY{n}{vecpi} \PY{o}{@} \PY{n}{vecc}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{322}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{cons}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Private}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{cons\PYZus{}full}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Full}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private Information \PYZhy{} Average consumption}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Outside option (\PYZdl{}w\PYZus{}0\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Consumption (\PYZdl{}c\PYZdl{})}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{best}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_46_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The planner can lower consumption in some states of the world under full
+information to an extent that would not be possible under incentive
+compatibility constraint.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
